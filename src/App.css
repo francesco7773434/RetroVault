@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+body {
+  background-image: url("https://wallpapers.com/images/featured/immagini-di-giochi-retro-086p2jnd9acvwtfa.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #ffffff;
+  font-family: "Press Start 2P", cursive;
+}
+
+/* Navbar retro style */
+.retro-navbar {
+  background-color: #1a103d !important;
+  border-bottom: 4px solid #ffcc00;
+  padding-top: 1.5rem !important;
+  padding-bottom: 1.5rem !important;
+  font-family: "Press Start 2P", cursive;
+  box-shadow: 0 0 10px #00ffff;
+}
+
+.retro-brand {
+  color: #ffcc00 !important;
+  font-size: 0.8rem;
+  text-shadow: 1px 1px 0 #000;
+  letter-spacing: 1px;
+}
+
+.nav-link {
+  color: #00ffff !important;
+  font-size: 0.6rem;
+  padding: 0.5rem;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.nav-link:hover {
+  color: #fff700 !important;
+}
+
+.retro-btn-login {
+  font-size: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  background-color: #663399;
+  border: 2px solid #ffcc00;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 #000;
+  box-shadow: 3px 3px 0 #000;
+  font-family: "Press Start 2P", cursive !important;
+}
+
+.retro-btn-login:hover {
+  background-color: #ffcc00;
+  color: #000;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.bg-pixel-toggle {
+  background-color: #ffcc00 !important;
+}
+
+@media (max-width: 768px) {
+  .retro-navbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .nav-link {
+    font-size: 0.55rem;
+    padding: 0.3rem;
+  }
+
+  .retro-btn-login {
+    font-size: 0.45rem;
+    padding: 0.3rem 0.8rem;
+  }
+}
+
+/* Home page styles */
+
+.home-container {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.retro-title {
+  font-size: 2.5rem;
+  color: #ffcc00;
+  text-shadow: 2px 2px 0 #000;
+  font-family: "Press Start 2P", cursive;
+}
+
+.retro-subtitle {
+  font-size: 1.5rem;
+  color: #00ffff;
+  text-shadow: 1px 1px 0 #000;
+  font-family: "Press Start 2P", cursive;
+}
+
+.retro-placeholder {
+  font-size: 0.6rem;
+  color: #ccc;
+  text-shadow: 1px 1px 0 #000;
+  font-style: italic;
+  font-family: "Press Start 2P", cursive;
+  background-color: #1a103d;
+}
+
+.retro-button {
+  font-size: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  background-color: #663399;
+  border: 2px solid #ffcc00;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 #000;
+  box-shadow: 3px 3px 0 #000;
+  font-family: "Press Start 2P", cursive;
+}
+
+.retro-button:hover {
+  background-color: #ffe347;
+  transform: translateY(-2px);
+  box-shadow: 3px 5px 0 #550087;
+}
+
+/* Catalogo page styles */
+
+.retro-font {
+  font-family: "Press Start 2P", cursive;
+}
+
+.retro-game-card {
+  background-color: #1c144a !important;
+  border: 3px solid #b755ff;
+  border-radius: 12px;
+  color: white;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 3px 3px 0 #6e2ca6;
+}
+
+.game-image-container {
+  background-color: black;
+  padding: 0.5rem;
+  border: 2px solid white;
+  margin-bottom: 1rem;
+}
+
+.game-image {
+  object-fit: contain;
+  height: 140px;
+  width: 100%;
+}
+
+.game-title {
+  color: #ffeb3b !important;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.game-rating {
+  font-size: 0.8rem;
+  color: #f9a825;
+  margin-bottom: 1rem;
+}
+
+.retro-details-btn {
+  background-color: #8e44ad !important;
+  color: white;
+  border: 2px solid #f06292;
+  font-family: "Press Start 2P", cursive !important;
+  font-size: 0.6rem;
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
+}
+
+.retro-details-btn:hover {
+  background-color: #ab47bc !important;
+  border-color: #ff80ab !important;
+  transform: translateY(-2px);
+  box-shadow: 3px 5px 0 #6e2ca6;
+}
