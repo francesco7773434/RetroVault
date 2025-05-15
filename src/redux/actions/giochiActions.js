@@ -58,6 +58,7 @@ export const creaRecensione = (giocoId, recensione) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(recensione),
       });
@@ -69,10 +70,55 @@ export const creaRecensione = (giocoId, recensione) => {
       const data = await response.json();
 
       dispatch({ type: "CREA_RECENSIONE_SUCCESS", payload: data });
-
       dispatch(fetchRecensioniByGiocoId(giocoId));
     } catch (error) {
       dispatch({ type: "CREA_RECENSIONE_FAILURE", payload: error.message });
     }
   };
+};
+
+export const loginUser = (credentials) => async (dispatch) => {
+  try {
+    dispatch({ type: "AUTH_REQUEST" });
+    const response = await fetch("http://localhost:8082/utenti/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    });
+    if (!response.ok) {
+      throw new Error("Errore nella registrazione");
+    }
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Errore durante il login");
+    }
+    localStorage.setItem("token", data.token);
+    dispatch({ type: "AUTH_SUCCESS", payload: data });
+  } catch (error) {
+    dispatch({ type: "AUTH_FAILURE", payload: error.message });
+  }
+};
+
+export const registerUser = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: "AUTH_REQUEST" });
+    const response = await fetch("http://localhost:8082/utenti/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Errore nella registrazione");
+    }
+    const message = await response.text();
+    console.log("Messaggio backend:", message);
+    dispatch({ type: "AUTH_SUCCESS", payload: message });
+  } catch (error) {
+    dispatch({ type: "AUTH_FAILURE", payload: error.message });
+  }
 };

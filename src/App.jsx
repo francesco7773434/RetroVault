@@ -4,6 +4,8 @@ import TopBar from "./components/TopBar/TopBar";
 import Home from "./components/Home/Home";
 import Catalogo from "./components/CatalogoGiochi/Catalogo";
 import GiocoDettaglio from "./components/CatalogoGiochi/GiocoDettaglio";
+import LoginForm from "./components/Login/LoginForm";
+import RegisterForm from "./components/Login/RegisterForm";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/giochi/:id" element={<GiocoDettaglio />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegisterForm />} />
         </Routes>
       </BrowserRouter>
     </>

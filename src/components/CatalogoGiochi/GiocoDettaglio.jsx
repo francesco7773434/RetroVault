@@ -38,6 +38,7 @@ const GiocoDettaglio = () => {
       creaRecensione(id, {
         voto: Number(voto),
         commento: commento.trim(),
+        giocoId: Number(id),
       })
     );
     setVoto("");

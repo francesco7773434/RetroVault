@@ -278,3 +278,81 @@ body {
 .retro-review-card strong {
   color: #ffcc00;
 }
+/* Login page styles */
+
+.retro-login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #000;
+}
+
+.retro-form-login {
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 15px #00ffff;
+  color: #00ffff;
+  font-family: "Press Start 2P", cursive;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.retro-title-login {
+  color: #ffcc00;
+  margin-bottom: 1.5rem;
+}
+
+.retro-label {
+  color: #ff00cc;
+  font-size: 0.75rem;
+}
+
+.retro-input {
+  background-color: #000;
+  border: 2px solid #ff00cc;
+  color: #00ffff;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.75rem;
+}
+
+.retro-input:focus {
+  background-color: #111;
+  outline: none;
+  box-shadow: 0 0 5px #ff00cc;
+}
+
+.retro-btn-login {
+  background-color: #00ffff;
+  border: none;
+  color: #000;
+  font-family: "Press Start 2P", cursive;
+}
+
+.retro-btn-login:hover {
+  background-color: #00cccc;
+}
+
+.retro-btn-register {
+  border: 2px solid #00ffff;
+  color: #00ffff;
+  font-family: "Press Start 2P", cursive;
+  background: transparent;
+}
+
+.retro-btn-register:hover {
+  background-color: #003333;
+  color: #00ffff;
+}
+
+.retro-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #111;
+  padding: 1rem;
+}
