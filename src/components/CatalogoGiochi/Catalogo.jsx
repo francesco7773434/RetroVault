@@ -29,9 +29,7 @@ const Catalogo = () => {
                   <Card.Body>
                     <Card.Title className="retro-font game-title">{gioco.titolo}</Card.Title>
                     <p className="game-rating ">Voto medio: {gioco.votoMedio?.toFixed(1) ?? "N/A"}</p>
-                    <p className="game-rating ">{gioco.descrizione}</p>
-                    <p className="game-rating ">{gioco.genere}</p>
-                    <p className="game-rating ">{gioco.piattaformaNome}</p>
+
                     <Button className="retro-details-btn" href={`/giochi/${gioco.id}`}>
                       Dettagli
                     </Button>

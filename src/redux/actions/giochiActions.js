@@ -3,7 +3,7 @@ export const fetchGiochi = () => {
     try {
       dispatch({ type: "FETCH_GIOCHI_REQUEST" });
 
-      const response = await fetch("http://localhost:8082/giochi/all?page=0&size=10&sort=titolo");
+      const response = await fetch("http://localhost:8082/giochi/all?page=0&size=30&sort=titolo");
       if (!response.ok) throw new Error("Errore nel caricamento");
 
       const data = await response.json();
@@ -11,6 +11,68 @@ export const fetchGiochi = () => {
       dispatch({ type: "FETCH_GIOCHI_SUCCESS", payload: data.content });
     } catch (error) {
       dispatch({ type: "FETCH_GIOCHI_FAILURE", payload: error.message });
+    }
+  };
+};
+
+export const fetchGiocoById = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: "FETCH_GIOCO_REQUEST" });
+
+      const response = await fetch(`http://localhost:8082/giochi/${id}`);
+      if (!response.ok) throw new Error("Errore nel caricamento");
+
+      const data = await response.json();
+      console.log(data);
+      dispatch({ type: "FETCH_GIOCO_SUCCESS", payload: data });
+    } catch (error) {
+      dispatch({ type: "FETCH_GIOCO_FAILURE", payload: error.message });
+    }
+  };
+};
+
+export const fetchRecensioniByGiocoId = (giocoId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: "FETCH_RECENSIONI_REQUEST" });
+
+      const response = await fetch(`http://localhost:8082/recensioni/giochi/${giocoId}/recensioni?page=0&size=10`);
+      if (!response.ok) throw new Error("Errore nel caricamento");
+
+      const data = await response.json();
+      console.log(data);
+      dispatch({ type: "FETCH_RECENSIONI_SUCCESS", payload: data.content });
+    } catch (error) {
+      dispatch({ type: "FETCH_RECENSIONI_FAILURE", payload: error.message });
+    }
+  };
+};
+
+export const creaRecensione = (giocoId, recensione) => {
+  return async (dispatch) => {
+    dispatch({ type: "CREA_RECENSIONE_REQUEST" });
+
+    try {
+      const response = await fetch(`http://localhost:8082/recensioni`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(recensione),
+      });
+
+      if (!response.ok) {
+        throw new Error("Errore nella creazione della recensione");
+      }
+
+      const data = await response.json();
+
+      dispatch({ type: "CREA_RECENSIONE_SUCCESS", payload: data });
+
+      dispatch(fetchRecensioniByGiocoId(giocoId));
+    } catch (error) {
+      dispatch({ type: "CREA_RECENSIONE_FAILURE", payload: error.message });
     }
   };
 };

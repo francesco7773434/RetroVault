@@ -126,6 +126,7 @@ body {
 
 .retro-font {
   font-family: "Press Start 2P", cursive;
+  color: #ffcc00;
 }
 
 .retro-game-card {
@@ -178,4 +179,102 @@ body {
   border-color: #ff80ab !important;
   transform: translateY(-2px);
   box-shadow: 3px 5px 0 #6e2ca6;
+}
+
+/* Gioco dettaglio page styles */
+
+.retro-game-detail {
+  background: linear-gradient(145deg, #1f0035, #000000);
+  border: 2px solid #ff00cc;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px #ff00cc;
+  color: white;
+}
+
+.retro-description-box {
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.7rem;
+  text-shadow: 1px 1px #000000;
+  line-height: 2;
+}
+
+.label-anno {
+  color: #00ff00;
+}
+
+.label-genere {
+  color: #ffcc00;
+}
+
+.label-piattaforma {
+  color: #00ffff;
+}
+
+.label-voto {
+  color: #ff00ff;
+}
+
+.label-descrizione {
+  color: #ff4444;
+}
+
+.retro-title {
+  font-family: "Press Start 2P", cursive;
+  color: #00ffff;
+  text-shadow: 2px 2px #000;
+  font-size: 1.4rem;
+}
+
+.game-image-container {
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  max-height: 500px;
+  border: 2px solid #00ffff;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #00ffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.game-image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #ff00cc;
+}
+
+.retro-review-card {
+  background-color: #1a0033;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 15px #ff00cc;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.7rem;
+  color: white;
+}
+
+.retro-review-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  border: 2px solid #ff00cc;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #ff00cc;
+  color: #00ffff !important;
+  font-family: "Press Start 2P", cursive;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.retro-review-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #ff00cc;
+}
+
+.retro-review-card strong {
+  color: #ffcc00;
 }
