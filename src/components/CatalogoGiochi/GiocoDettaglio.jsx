@@ -54,8 +54,8 @@ const GiocoDettaglio = () => {
       <h2 className="retro-title mb-5">{giocoSingolo.titolo}</h2>
       <Row className="align-items-center">
         <Col md={6}>
-          <div className="game-image-container">
-            <Card.Img src={giocoSingolo.immagine} className="game-image mb-3" />
+          <div className="game-image-container-detail">
+            <Card.Img src={giocoSingolo.immagine} className="game-image-detail mb-3" />
           </div>
         </Col>
         <Col md={6} className="text-start retro-description-box">
