@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/actions/giochiActions";
 
 import { Alert, Button, Form, Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { loading, error, user } = useSelector((state) => state.auth);
 
   const [credentials, setCredentials] = useState({
     username: "",
@@ -22,6 +23,12 @@ const LoginForm = () => {
     e.preventDefault();
     dispatch(loginUser(credentials));
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="retro-login-wrapper">

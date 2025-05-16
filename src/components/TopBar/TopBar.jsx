@@ -1,6 +1,42 @@
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../redux/actions/giochiActions";
+import { useEffect } from "react";
 
 const TopBar = () => {
+  const user = useSelector((state) => state.auth.user);
+  const isAuthenticated = !!user;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token && !user) {
+      fetch("http://localhost:8082/utenti/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Errore nel recupero utente");
+          return res.json();
+        })
+        .then((userData) => {
+          dispatch({ type: "AUTH_SUCCESS", payload: userData, token });
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          dispatch({ type: "LOGOUT" });
+        });
+    }
+  }, [dispatch, user]);
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    localStorage.removeItem("token");
+  };
+
   return (
     <Navbar expand="lg" className="retro-navbar">
       <Container fluid>
@@ -15,9 +51,21 @@ const TopBar = () => {
             <Nav.Link href="/recensioni">Recensioni</Nav.Link>
             <Nav.Link href="/profilo">Profilo</Nav.Link>
           </Nav>
-          <Button href="/login" className="retro-btn-login">
-            LOGIN
-          </Button>
+
+          <div className="ms-auto d-flex align-items-center">
+            {isAuthenticated ? (
+              <>
+                <span className="text-white me-3">Ciao, {user.username}!</span>
+                <Button onClick={handleLogout} className="retro-btn-logout">
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button href="/login" className="retro-btn-login">
+                LOGIN
+              </Button>
+            )}
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>

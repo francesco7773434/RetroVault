@@ -95,7 +95,7 @@ export const loginUser = (credentials) => async (dispatch) => {
       throw new Error(data.message || "Errore durante il login");
     }
     localStorage.setItem("token", data.token);
-    dispatch({ type: "AUTH_SUCCESS", payload: data });
+    dispatch({ type: "AUTH_SUCCESS", payload: data.user });
   } catch (error) {
     dispatch({ type: "AUTH_FAILURE", payload: error.message });
   }
@@ -121,4 +121,10 @@ export const registerUser = (userData) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: "AUTH_FAILURE", payload: error.message });
   }
+};
+
+export const logoutUser = () => {
+  return (dispatch) => {
+    dispatch({ type: "LOGOUT" });
+  };
 };
