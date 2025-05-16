@@ -54,7 +54,7 @@ const RegisterForm = () => {
           <Form.Control className="retro-input" type="password" name="password" value={formData.password} onChange={handleChange} required />
         </Form.Group>
 
-        <Button type="submit" className="retro-btn-login w-100" disabled={loading}>
+        <Button href="/login" type="submit" className="retro-btn-login w-100" disabled={loading}>
           {loading ? <Spinner size="sm" animation="border" /> : "🚀 Registrati"}
         </Button>
       </Form>

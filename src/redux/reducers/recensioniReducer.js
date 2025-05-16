@@ -1,5 +1,6 @@
 const initialState = {
   lista: [],
+  tutte: [],
   loading: false,
   error: null,
   loadingCreate: false,
@@ -22,6 +23,14 @@ const recensioniReducer = (state = initialState, action) => {
       return { ...state, loadingCreate: false, successCreate: true };
     case "CREA_RECENSIONE_FAILURE":
       return { ...state, loadingCreate: false, errorCreate: action.payload };
+    case "FETCH_ALL_RECENSIONI_REQUEST":
+      return { ...state, loading: true, error: null };
+
+    case "FETCH_ALL_RECENSIONI_SUCCESS":
+      return { ...state, loading: false, tutte: action.payload };
+
+    case "FETCH_ALL_RECENSIONI_FAILURE":
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

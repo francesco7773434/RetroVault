@@ -68,6 +68,7 @@ export const creaRecensione = (giocoId, recensione) => {
       }
 
       const data = await response.json();
+      console.log(data);
 
       dispatch({ type: "CREA_RECENSIONE_SUCCESS", payload: data });
       dispatch(fetchRecensioniByGiocoId(giocoId));
@@ -95,6 +96,7 @@ export const loginUser = (credentials) => async (dispatch) => {
       throw new Error(data.message || "Errore durante il login");
     }
     localStorage.setItem("token", data.token);
+    console.log(data);
     dispatch({ type: "AUTH_SUCCESS", payload: data.user });
   } catch (error) {
     dispatch({ type: "AUTH_FAILURE", payload: error.message });
@@ -126,5 +128,22 @@ export const registerUser = (userData) => async (dispatch) => {
 export const logoutUser = () => {
   return (dispatch) => {
     dispatch({ type: "LOGOUT" });
+  };
+};
+
+export const fetchTutteLeRecensioni = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: "FETCH_ALL_RECENSIONI_REQUEST" });
+
+      const response = await fetch("http://localhost:8082/recensioni/recensioni?page=0&size=10");
+      if (!response.ok) throw new Error("Errore nel caricamento delle recensioni");
+
+      const data = await response.json();
+      console.log(data);
+      dispatch({ type: "FETCH_ALL_RECENSIONI_SUCCESS", payload: data.content });
+    } catch (error) {
+      dispatch({ type: "FETCH_ALL_RECENSIONI_FAILURE", payload: error.message });
+    }
   };
 };

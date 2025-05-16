@@ -6,6 +6,7 @@ import Catalogo from "./components/CatalogoGiochi/Catalogo";
 import GiocoDettaglio from "./components/CatalogoGiochi/GiocoDettaglio";
 import LoginForm from "./components/Login/LoginForm";
 import RegisterForm from "./components/Login/RegisterForm";
+import RecensioniPage from "./components/Recensioni/RecensioniPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/giochi/:id" element={<GiocoDettaglio />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/recensioni" element={<RecensioniPage />} />
         </Routes>
       </BrowserRouter>
     </>
