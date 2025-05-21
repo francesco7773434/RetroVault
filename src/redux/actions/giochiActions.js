@@ -186,3 +186,73 @@ export const deleteRecensione = (recensioneId) => {
     }
   };
 };
+
+export const fetchUserProfile = () => async (dispatch) => {
+  dispatch({ type: "FETCH_USER_PROFILE_REQUEST" });
+
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:8082/utenti/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) throw new Error("Errore nel recupero utente");
+    const data = await response.json();
+    console.log(data);
+    dispatch({ type: "FETCH_USER_PROFILE_SUCCESS", payload: data });
+  } catch (error) {
+    dispatch({ type: "FETCH_USER_PROFILE_FAILURE", payload: error.message });
+  }
+};
+
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8082";
+
+export const updateUserProfile = (data) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: "AUTH_REQUEST" });
+
+    const state = getState();
+    const token = state.auth.token || localStorage.getItem("token");
+
+    const user = state.auth.user;
+
+    console.log("Token:", token);
+    console.log("User ID:", user?.id);
+    console.log("Dati da aggiornare:", data);
+
+    const res = await fetch(`${BASE_URL}/utenti/${user.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText || "Errore nella richiesta");
+    }
+
+    const contentType = res.headers.get("content-type");
+    let result = {};
+    if (contentType && contentType.includes("application/json")) {
+      result = await res.json();
+    }
+
+    dispatch({
+      type: "UPDATE_USER_SUCCESS",
+      payload: result,
+    });
+  } catch (error) {
+    dispatch({
+      type: "AUTH_FAILURE",
+      payload: error.message,
+    });
+  }
+};
+
+export const resetUserUpdateSuccess = () => ({
+  type: "RESET_USER_UPDATE_SUCCESS",
+});
