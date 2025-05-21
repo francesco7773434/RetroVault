@@ -97,7 +97,13 @@ export const loginUser = (credentials) => async (dispatch) => {
     }
     localStorage.setItem("token", data.token);
     console.log(data);
-    dispatch({ type: "AUTH_SUCCESS", payload: data.user });
+    dispatch({
+      type: "AUTH_SUCCESS",
+      payload: {
+        user: data.user,
+        token: data.token,
+      },
+    });
   } catch (error) {
     dispatch({ type: "AUTH_FAILURE", payload: error.message });
   }
@@ -106,6 +112,7 @@ export const loginUser = (credentials) => async (dispatch) => {
 export const registerUser = (userData) => async (dispatch) => {
   try {
     dispatch({ type: "AUTH_REQUEST" });
+    console.log("Registrazione in corso con dati:", userData);
     const response = await fetch("http://localhost:8082/utenti/register", {
       method: "POST",
       headers: {
@@ -113,14 +120,19 @@ export const registerUser = (userData) => async (dispatch) => {
       },
       body: JSON.stringify(userData),
     });
+
     if (!response.ok) {
       const errorText = await response.text();
+      console.error("Errore back-end:", errorText);
       throw new Error(errorText || "Errore nella registrazione");
     }
+
     const message = await response.text();
-    console.log("Messaggio backend:", message);
-    dispatch({ type: "AUTH_SUCCESS", payload: message });
+    console.log("Risposta dal backend:", message);
+
+    dispatch({ type: "REGISTER_SUCCESS", payload: message });
   } catch (error) {
+    console.error("Errore durante la registrazione:", error.message);
     dispatch({ type: "AUTH_FAILURE", payload: error.message });
   }
 };

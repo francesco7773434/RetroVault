@@ -23,7 +23,7 @@ const TopBar = () => {
           return res.json();
         })
         .then((userData) => {
-          dispatch({ type: "AUTH_SUCCESS", payload: userData, token });
+          dispatch({ type: "AUTH_SUCCESS", payload: { user: userData, token } });
         })
         .catch(() => {
           localStorage.removeItem("token");
