@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
-import { creaRecensione, fetchGiocoById, fetchRecensioniByGiocoId } from "../../redux/actions/giochiActions";
+import { creaRecensione, deleteRecensione, fetchGiocoById, fetchRecensioniByGiocoId } from "../../redux/actions/giochiActions";
 import { Container, Row, Col, Card, Spinner, Alert, Button, Form } from "react-bootstrap";
 
 const GiocoDettaglio = () => {
@@ -16,7 +16,12 @@ const GiocoDettaglio = () => {
     loadingCreate,
     errorCreate,
     successCreate,
+
+    successDelete,
+    errorDelete,
   } = useSelector((state) => state.recensioni);
+
+  const user = useSelector((state) => state.auth.user);
 
   const [voto, setVoto] = useState("");
   const [commento, setCommento] = useState("");
@@ -32,6 +37,24 @@ const GiocoDettaglio = () => {
     }
   }, [dispatch, id, successCreate]);
 
+  useEffect(() => {
+    if (successCreate) {
+      const timer = setTimeout(() => {
+        dispatch({ type: "RESET_SUCCESS_CREATE" });
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [dispatch, successCreate]);
+
+  useEffect(() => {
+    if (successDelete) {
+      setTimeout(() => {
+        dispatch({ type: "RESET_SUCCESS_DELETE" });
+      }, 2000);
+    }
+  }, [dispatch, successDelete]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
@@ -43,6 +66,12 @@ const GiocoDettaglio = () => {
     );
     setVoto("");
     setCommento("");
+  };
+
+  const handleDelete = (recensioneId) => {
+    dispatch(deleteRecensione(recensioneId)).then(() => {
+      dispatch(fetchRecensioniByGiocoId(id));
+    });
   };
 
   if (loading) return <Spinner animation="border" variant="warning" />;
@@ -121,8 +150,25 @@ const GiocoDettaglio = () => {
               <strong>Voto:</strong> {recensione.voto}
               <br />
               <strong>Commento:</strong> {recensione.commento}
+              {user && recensione.utenteId === user.id && (
+                <div className="text-end mt-2">
+                  <Button variant="danger" size="sm" onClick={() => handleDelete(recensione.id)}>
+                    🗑 Elimina la tua recensione
+                  </Button>
+                </div>
+              )}
             </Card>
           ))
+        )}
+        {successDelete && (
+          <Alert variant="success" className="mt-3">
+            La recensione è stata eliminata con successo!
+          </Alert>
+        )}
+        {errorDelete && (
+          <Alert variant="danger" className="mt-3">
+            Errore nell'eliminazione della recensione: {errorDelete}
+          </Alert>
         )}
       </div>
     </Container>

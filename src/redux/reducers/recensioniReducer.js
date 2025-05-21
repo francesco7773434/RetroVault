@@ -6,6 +6,9 @@ const initialState = {
   loadingCreate: false,
   errorCreate: null,
   successCreate: false,
+
+  errorDelete: null,
+  successDelete: false,
 };
 
 const recensioniReducer = (state = initialState, action) => {
@@ -23,6 +26,8 @@ const recensioniReducer = (state = initialState, action) => {
       return { ...state, loadingCreate: false, successCreate: true };
     case "CREA_RECENSIONE_FAILURE":
       return { ...state, loadingCreate: false, errorCreate: action.payload };
+    case "RESET_SUCCESS_CREATE":
+      return { ...state, successCreate: false, errorCreate: null };
     case "FETCH_ALL_RECENSIONI_REQUEST":
       return { ...state, loading: true, error: null };
 
@@ -31,6 +36,14 @@ const recensioniReducer = (state = initialState, action) => {
 
     case "FETCH_ALL_RECENSIONI_FAILURE":
       return { ...state, loading: false, error: action.payload };
+    case "RECENSIONE_DELETE_REQUEST":
+      return { ...state, errorDelete: null, successDelete: false };
+    case "RECENSIONE_DELETE_SUCCESS":
+      return { ...state, successDelete: true, lista: state.lista.filter((recensione) => recensione.id !== action.payload) };
+    case "RECENSIONE_DELETE_FAILURE":
+      return { ...state, errorDelete: action.payload };
+    case "RESET_SUCCESS_DELETE":
+      return { ...state, successDelete: false };
     default:
       return state;
   }

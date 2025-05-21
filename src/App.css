@@ -415,3 +415,40 @@ body {
   font-family: "Press Start 2P", cursive;
   padding: 10px;
 }
+
+/* Registrazione page styles */
+
+.retro-modal .modal-content {
+  background-color: #f4f1de;
+  border: 4px solid #000;
+  border-radius: 0;
+  font-family: "Press Start 2P", cursive;
+  color: #333;
+  box-shadow: 0 0 0 4px #ff006e, 0 0 20px #8338ec;
+  padding: 10px;
+}
+
+.retro-modal-header {
+  border-bottom: 2px solid #000;
+  background-color: #ffd166;
+  text-align: center;
+}
+
+.retro-modal-body {
+  background-color: #f4f1de;
+}
+
+.retro-btn-login {
+  background-color: #06d6a0;
+  border: 2px solid #000;
+  color: #000;
+  font-weight: bold;
+  font-family: "Press Start 2P", cursive;
+  transition: transform 0.2s;
+}
+
+.retro-btn-login:hover {
+  transform: scale(1.05);
+  background-color: #118ab2;
+  color: #fff;
+}

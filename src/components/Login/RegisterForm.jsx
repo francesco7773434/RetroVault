@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../redux/actions/giochiActions";
 
-import { Alert, Button, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, Form, Modal, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
@@ -29,12 +29,17 @@ const RegisterForm = () => {
 
   if (successMessage) {
     return (
-      <div className="retro-form-container">
-        <Alert variant="success">{successMessage}. Ora puoi fare il login!</Alert>
-        <Button onClick={() => navigate("/login")} className="retro-btn-login w-100">
-          Vai al Login
-        </Button>
-      </div>
+      <Modal show={true} centered backdrop="static" keyboard={false} className="retro-modal">
+        <Modal.Header className="retro-modal-header">
+          <Modal.Title>🎉 Registrazione Completata</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="retro-modal-body text-center">
+          <p>{successMessage}. Ora puoi fare il login!</p>
+          <Button onClick={() => navigate("/login")} className="retro-btn-login mt-3 w-100">
+            🚪 Vai al Login
+          </Button>
+        </Modal.Body>
+      </Modal>
     );
   }
 

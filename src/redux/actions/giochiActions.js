@@ -159,3 +159,30 @@ export const fetchTutteLeRecensioni = () => {
     }
   };
 };
+
+export const deleteRecensione = (recensioneId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: "RECENSIONE_DELETE_REQUEST" });
+      const { auth } = getState();
+      const token = auth?.user?.token;
+
+      const response = await fetch(`http://localhost:8082/recensioni/${recensioneId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Errore nella cancellazione della recensione");
+      }
+
+      dispatch({ type: "RECENSIONE_DELETE_SUCCESS", payload: recensioneId });
+    } catch (error) {
+      dispatch({ type: "RECENSIONE_DELETE_FAILURE", payload: error.message });
+    }
+  };
+};
