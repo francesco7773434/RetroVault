@@ -95,6 +95,7 @@ export const loginUser = (credentials) => async (dispatch) => {
     if (!response.ok) {
       throw new Error(data.message || "Errore durante il login");
     }
+    localStorage.setItem("user", JSON.stringify(data.user));
     localStorage.setItem("token", data.token);
     console.log(data);
     dispatch({
@@ -139,6 +140,7 @@ export const registerUser = (userData) => async (dispatch) => {
 
 export const logoutUser = () => {
   return (dispatch) => {
+    localStorage.removeItem("token");
     dispatch({ type: "LOGOUT" });
   };
 };
@@ -256,3 +258,28 @@ export const updateUserProfile = (data) => async (dispatch, getState) => {
 export const resetUserUpdateSuccess = () => ({
   type: "RESET_USER_UPDATE_SUCCESS",
 });
+
+export const fetchRecensioniByUser = (userId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: "FETCH_RECENSIONI_UTENTE_REQUEST" });
+
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:8082/recensioni/utente/${userId}/recensioni?page=0&size=10`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Errore nel caricamento delle recensioni");
+
+      const data = await response.json();
+
+      dispatch({ type: "FETCH_RECENSIONI_UTENTE_SUCCESS", payload: data.content });
+    } catch (error) {
+      dispatch({ type: "FETCH_RECENSIONI_UTENTE_FAILURE", payload: error.message });
+    }
+  };
+};

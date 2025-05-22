@@ -452,3 +452,65 @@ body {
   background-color: #118ab2;
   color: #fff;
 }
+
+.retro-title {
+  font-family: "Press Start 2P", cursive;
+  color: #ffcc00;
+  text-shadow: 1px 1px #000;
+}
+
+.retro-description-box {
+  background-color: #111;
+  border: 2px solid #ffcc00;
+  border-radius: 10px;
+  padding: 20px;
+  color: #eee;
+}
+
+.retro-btn-login {
+  background-color: #ffcc00;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 20px;
+  font-family: "Press Start 2P", cursive;
+}
+
+.retro-input {
+  background-color: #222;
+  border: 1px solid #ffcc00;
+  color: #fff;
+}
+
+.retro-recensione-card {
+  background-color: #2e2e2e;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #ffcc00;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.retro-recensione-card:hover {
+  transform: translateY(-5px);
+}
+
+.retro-recensione-title {
+  font-family: "Press Start 2P", cursive;
+  font-size: 1.2rem;
+  color: #ffcc00;
+}
+
+.retro-recensione-subtitle {
+  font-family: "Press Start 2P", cursive;
+  font-size: 1rem;
+  color: #ffcc00;
+}
+
+.retro-recensione-card p {
+  color: #ffffff;
+}
+
+.retro-recensione-card strong {
+  color: #ffcc00;
+}
