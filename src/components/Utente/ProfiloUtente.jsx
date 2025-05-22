@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile, updateUserProfile, resetUserUpdateSuccess, fetchRecensioniByUser } from "../../redux/actions/giochiActions";
+import { fetchUserProfile, updateUserProfile, fetchRecensioniByUser } from "../../redux/actions/giochiActions";
 import { Container, Row, Col, Button, Spinner, Alert, Modal, Form, Image } from "react-bootstrap";
 
 const ProfiloUtente = () => {
@@ -29,12 +29,6 @@ const ProfiloUtente = () => {
   }, [dispatch, user]);
 
   useEffect(() => {
-    if (recensioniUtente.length > 0) {
-      console.log("Recensioni utente caricate:", recensioniUtente);
-    }
-  }, [recensioniUtente]);
-
-  useEffect(() => {
     if (user) {
       setFormData({
         username: user.username || "",
@@ -45,16 +39,6 @@ const ProfiloUtente = () => {
       });
     }
   }, [user]);
-
-  useEffect(() => {
-    if (updateSuccess && justSubmitted) {
-      const timer = setTimeout(() => {
-        dispatch(resetUserUpdateSuccess());
-        setJustSubmitted(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [updateSuccess, justSubmitted, dispatch]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
