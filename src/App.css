@@ -514,3 +514,47 @@ body {
 .retro-recensione-card strong {
   color: #ffcc00;
 }
+
+/* Anteprima Giochi page styles */
+
+.retro-game-card {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #fff4e6;
+  border: 1px solid #ffc107;
+  padding: 0.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.retro-game-card:hover {
+  transform: scale(1.05);
+}
+
+.retro-game-card .card-img-top {
+  object-fit: cover;
+  height: 120px;
+  width: 100%;
+  border-radius: 0.25rem;
+}
+
+.retro-game-card .card-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.retro-game-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 0.5rem;
+}
+
+.retro-game-card .btn {
+  margin-top: auto;
+  width: 100%;
+}

@@ -1,5 +1,7 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import AnteprimaGiochi from "../CatalogoGiochi/AnteprimaGiochi";
+import AnteprimaRecensioni from "../Recensioni/AnteprimaRecensioni";
 
 const Home = () => {
   return (
@@ -15,10 +17,10 @@ const Home = () => {
       </Row>
       <Row className="justify-content-center">
         <Col md={8}>
-          <div className="retro-placeholder p-4 border border-warning rounded">[ Prossimamente: anteprima giochi... ]</div>
+          <AnteprimaGiochi />
         </Col>
         <Col md={8}>
-          <div className="retro-placeholder p-4 border border-warning rounded mt-4">[ Prossimamente: anteprima recensioni... ]</div>
+          <AnteprimaRecensioni />
         </Col>
       </Row>
     </Container>
