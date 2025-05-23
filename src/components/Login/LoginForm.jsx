@@ -26,10 +26,9 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/", { replace: true });
     }
   }, [user, navigate]);
-
   return (
     <div className="retro-login-wrapper">
       <Form onSubmit={handleSubmit} className="retro-form-login">

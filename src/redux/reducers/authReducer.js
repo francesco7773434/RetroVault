@@ -26,6 +26,9 @@ const authReducer = (state = initialState, action) => {
       return { ...state, loading: false, successMessage: action.payload };
     case "FETCH_USER_PROFILE_SUCCESS":
     case "UPDATE_USER_PROFILE_SUCCESS":
+      if (JSON.stringify(state.user) === JSON.stringify(action.payload)) {
+        return state;
+      }
       return {
         ...state,
         loading: false,

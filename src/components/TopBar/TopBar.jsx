@@ -2,6 +2,7 @@ import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/actions/giochiActions";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const TopBar = () => {
   const user = useSelector((state) => state.auth.user);
@@ -31,10 +32,18 @@ const TopBar = () => {
         });
     }
   }, [dispatch, user]);
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
   return (
@@ -49,7 +58,11 @@ const TopBar = () => {
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/catalogo">Catalogo</Nav.Link>
             <Nav.Link href="/recensioni">Recensioni</Nav.Link>
-            <Nav.Link href="/profilo">Profilo</Nav.Link>
+            {isAuthenticated && (
+              <Nav.Link as={Link} to="/profilo">
+                Profilo
+              </Nav.Link>
+            )}
           </Nav>
 
           <div className="ms-auto d-flex align-items-center">

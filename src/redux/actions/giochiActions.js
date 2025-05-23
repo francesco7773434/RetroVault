@@ -95,8 +95,12 @@ export const loginUser = (credentials) => async (dispatch) => {
     if (!response.ok) {
       throw new Error(data.message || "Errore durante il login");
     }
-    localStorage.setItem("user", JSON.stringify(data.user));
-    localStorage.setItem("token", data.token);
+    if (data.user) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+    }
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+    }
     console.log(data);
     dispatch({
       type: "AUTH_SUCCESS",
@@ -282,4 +286,16 @@ export const fetchRecensioniByUser = (userId) => {
       dispatch({ type: "FETCH_RECENSIONI_UTENTE_FAILURE", payload: error.message });
     }
   };
+};
+
+export const loadUserFromLocalStorage = () => (dispatch) => {
+  const userJSON = localStorage.getItem("user");
+  try {
+    const user = userJSON ? JSON.parse(userJSON) : null;
+    dispatch({ type: "LOAD_USER", payload: user });
+  } catch (e) {
+    console.error("Errore nel parsing user da localStorage:", e);
+    localStorage.removeItem("user");
+    dispatch({ type: "LOAD_USER", payload: null });
+  }
 };

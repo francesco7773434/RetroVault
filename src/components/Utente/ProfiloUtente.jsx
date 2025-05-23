@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile, updateUserProfile, fetchRecensioniByUser } from "../../redux/actions/giochiActions";
 import { Container, Row, Col, Button, Spinner, Alert, Modal, Form, Image } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
 
 const ProfiloUtente = () => {
   const dispatch = useDispatch();
@@ -19,12 +20,14 @@ const ProfiloUtente = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchUserProfile());
-  }, [dispatch]);
+    if (user?.id) {
+      dispatch(fetchRecensioniByUser(user.id));
+    }
+  }, [dispatch, user?.id]);
 
   useEffect(() => {
-    if (user) {
-      dispatch(fetchRecensioniByUser(user.id));
+    if (!user) {
+      dispatch(fetchUserProfile());
     }
   }, [dispatch, user]);
 
@@ -53,6 +56,10 @@ const ProfiloUtente = () => {
     setShowModal(false);
     setJustSubmitted(true);
   };
+
+  if (!user && !loading) {
+    return <Navigate to="/login" replace />;
+  }
 
   if (loading && !user) return <Spinner animation="border" variant="warning" />;
 

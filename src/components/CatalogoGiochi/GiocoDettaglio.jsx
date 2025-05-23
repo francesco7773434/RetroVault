@@ -150,6 +150,8 @@ const GiocoDettaglio = () => {
               <strong>Voto:</strong> {recensione.voto}
               <br />
               <strong>Commento:</strong> {recensione.commento}
+              <br />
+              <strong>Data:</strong> {recensione.dataRecensione}
               {user && recensione.utenteId === user.id && (
                 <div className="text-end mt-2">
                   <Button variant="danger" size="sm" onClick={() => handleDelete(recensione.id)}>
