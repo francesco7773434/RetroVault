@@ -14,6 +14,7 @@ import { loadUserFromLocalStorage } from "./redux/actions/giochiActions";
 import Backoffice from "./components/Backoffice/Backoffice";
 import AdminGiochi from "./components/Backoffice/AdminGiochi";
 import AdminRecensioni from "./components/Backoffice/AdminRecensioni";
+import AdminUtenti from "./components/Backoffice/AdminUtenti";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,6 +72,14 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <AdminRecensioni />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/utenti"
+            element={
+              <ProtectedRoute user={user}>
+                <AdminUtenti />
               </ProtectedRoute>
             }
           />
