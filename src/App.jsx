@@ -11,6 +11,8 @@ import ProfiloUtente from "./components/Utente/ProfiloUtente";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loadUserFromLocalStorage } from "./redux/actions/giochiActions";
+import Backoffice from "./components/Backoffice/Backoffice";
+import AdminGiochi from "./components/Backoffice/AdminGiochi";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +46,22 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <ProfiloUtente />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute user={user}>
+                <Backoffice />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/giochi"
+            element={
+              <ProtectedRoute user={user}>
+                <AdminGiochi />
               </ProtectedRoute>
             }
           />

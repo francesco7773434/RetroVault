@@ -24,6 +24,7 @@ const TopBar = () => {
           return res.json();
         })
         .then((userData) => {
+          console.log("Dati utente:", userData);
           dispatch({ type: "AUTH_SUCCESS", payload: { user: userData, token } });
         })
         .catch(() => {
@@ -58,6 +59,11 @@ const TopBar = () => {
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/catalogo">Catalogo</Nav.Link>
             <Nav.Link href="/recensioni">Recensioni</Nav.Link>
+            {isAuthenticated && user?.roles?.includes("ROLE_ADMIN") && (
+              <Nav.Link as={Link} to="/admin">
+                🛠 Backoffice
+              </Nav.Link>
+            )}
             {isAuthenticated && (
               <Nav.Link as={Link} to="/profilo">
                 Profilo

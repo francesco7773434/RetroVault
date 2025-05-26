@@ -558,3 +558,62 @@ body {
   margin-top: auto;
   width: 100%;
 }
+
+/* AdminGiochi */
+
+/*.admin-retro {
+  font-family: 'Press Start 2P', monospace;
+  background-color: #111;
+  color: #00ffff;
+  padding: 30px;
+  border-radius: 8px;
+  font-size: 12px; 
+  line-height: 1.6;
+} */
+.admin-retro {
+  background-color: #111;
+  color: #00ffff;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+.admin-retro h2 {
+  font-size: 3rem;
+  color: #ff00ff;
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+.admin-retro .btn-primary {
+  background-color: #00ffff;
+  color: #111;
+  border: 2px solid #00ffff;
+  font-weight: bold;
+}
+
+.admin-retro .btn-warning {
+  background-color: #ffcc00;
+  border: none;
+  color: #111;
+}
+
+.admin-retro .btn-danger {
+  background-color: #ff0044;
+  border: none;
+}
+
+.admin-retro .table {
+  background-color: #222;
+  color: #0ff;
+  border-color: #0ff;
+}
+
+.admin-retro .table th,
+.admin-retro .table td {
+  border-color: #0ff;
+}
+
+.modal-content {
+  background-color: #1a1a1a;
+  color: #0ff;
+  border: 1px solid #0ff;
+}

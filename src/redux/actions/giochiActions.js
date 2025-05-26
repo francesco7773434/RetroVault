@@ -31,6 +31,54 @@ export const fetchGiocoById = (id) => {
     }
   };
 };
+export const creaGioco = (gioco) => async (dispatch) => {
+  try {
+    const res = await fetch("http://localhost:8082/giochi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(gioco),
+    });
+    if (!res.ok) throw new Error("Errore creazione gioco");
+    dispatch(fetchGiochi());
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+export const modificaGioco = (id, gioco) => async (dispatch) => {
+  try {
+    const res = await fetch(`http://localhost:8082/giochi/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(gioco),
+    });
+    if (!res.ok) throw new Error("Errore modifica gioco");
+    dispatch(fetchGiochi());
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+export const eliminaGioco = (id) => async (dispatch) => {
+  try {
+    const res = await fetch(`http://localhost:8082/giochi/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    if (!res.ok) throw new Error("Errore eliminazione gioco");
+    dispatch(fetchGiochi());
+  } catch (error) {
+    alert(error.message);
+  }
+};
 
 export const fetchRecensioniByGiocoId = (giocoId) => {
   return async (dispatch) => {
