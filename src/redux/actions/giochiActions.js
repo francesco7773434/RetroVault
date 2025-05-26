@@ -126,6 +126,35 @@ export const creaRecensione = (giocoId, recensione) => {
   };
 };
 
+export const aggiornaRecensione = (recensioneId, updateData) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: "UPDATE_RECENSIONE_REQUEST" });
+      const token = getState().auth.token || localStorage.getItem("token");
+      const response = await fetch(`http://localhost:8082/recensioni/${recensioneId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updateData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Errore nell'aggiornamento della recensione");
+      }
+
+      const updateRecensione = await response.json();
+      console.log(updateRecensione);
+
+      dispatch({ type: "UPDATE_RECENSIONE_SUCCESS", payload: updateRecensione });
+      dispatch(fetchTutteLeRecensioni());
+    } catch (error) {
+      dispatch({ type: "UPDATE_RECENSIONE_FAILURE", payload: error.message });
+    }
+  };
+};
+
 export const loginUser = (credentials) => async (dispatch) => {
   try {
     dispatch({ type: "AUTH_REQUEST" });
@@ -328,6 +357,7 @@ export const fetchRecensioniByUser = (userId) => {
       if (!response.ok) throw new Error("Errore nel caricamento delle recensioni");
 
       const data = await response.json();
+      console.log(data);
 
       dispatch({ type: "FETCH_RECENSIONI_UTENTE_SUCCESS", payload: data.content });
     } catch (error) {

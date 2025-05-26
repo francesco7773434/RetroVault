@@ -51,6 +51,13 @@ const recensioniReducer = (state = initialState, action) => {
       return { ...state, loading: false, recensioniUtente: action.payload };
     case "FETCH_RECENSIONI_UTENTE_FAILURE":
       return { ...state, loading: false, error: action.payload };
+    case "UPDATE_RECENSIONE_REQUEST":
+      return { ...state, loading: true, error: null };
+    case "UPDATE_RECENSIONE_SUCCESS":
+      return { ...state, loading: false, tutte: state.tutte.map((recensione) => (recensione.id === action.payload.id ? action.payload : recensione)) };
+    case "UPDATE_RECENSIONE_FAILURE":
+      return { ...state, loading: false, error: action.payload };
+
     default:
       return state;
   }

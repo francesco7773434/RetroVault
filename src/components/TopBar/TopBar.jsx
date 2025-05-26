@@ -61,7 +61,7 @@ const TopBar = () => {
             <Nav.Link href="/recensioni">Recensioni</Nav.Link>
             {isAuthenticated && user?.roles?.includes("ROLE_ADMIN") && (
               <Nav.Link as={Link} to="/admin">
-                🛠 Backoffice
+                Backoffice
               </Nav.Link>
             )}
             {isAuthenticated && (
