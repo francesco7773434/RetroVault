@@ -515,6 +515,20 @@ body {
   color: #ffcc00;
 }
 
+.retro-game-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.retro-game-card .card-body {
+  flex-grow: 1;
+}
+
+.recensione-card {
+  margin: 1.5rem;
+}
+
 /* Anteprima Giochi page styles */
 
 .retro-game-card {
@@ -629,15 +643,15 @@ body {
 .pagination-retro {
   display: flex;
   justify-content: center;
-  gap: 8px; /* spazio tra i bottoni */
+  gap: 8px;
   margin-top: 20px;
-  font-family: "Courier New", Courier, monospace; /* font retrò */
+  font-family: "Courier New", Courier, monospace;
 }
 
 .pagination-retro .page-item {
-  border: 2px solid #f4c430; /* giallo vintage */
+  border: 2px solid #f4c430;
   border-radius: 6px;
-  background-color: #2d2d2d; /* sfondo scuro */
+  background-color: #2d2d2d;
   transition: background-color 0.3s, color 0.3s;
 }
 
