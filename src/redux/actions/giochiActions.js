@@ -112,7 +112,7 @@ export const creaRecensione = (giocoId, recensione) => {
       });
 
       if (!response.ok) {
-        throw new Error("Errore nella creazione della recensione");
+        throw new Error("Errore nella creazione della recensione,devi essere loggato");
       }
 
       const data = await response.json();
@@ -255,8 +255,9 @@ export const deleteRecensione = (recensioneId) => {
   return async (dispatch, getState) => {
     try {
       dispatch({ type: "RECENSIONE_DELETE_REQUEST" });
+
       const { auth } = getState();
-      const token = auth?.user?.token;
+      const token = auth?.token || localStorage.getItem("token");
 
       const response = await fetch(`http://localhost:8082/recensioni/${recensioneId}`, {
         method: "DELETE",
