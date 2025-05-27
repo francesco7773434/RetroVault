@@ -1,15 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTutteLeRecensioni } from "../../redux/actions/giochiActions";
-import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
+import { Container, Row, Col, Card, Spinner, Alert, Pagination } from "react-bootstrap";
 
 const RecensioniPage = () => {
   const dispatch = useDispatch();
-  const { tutte, loading, error } = useSelector((state) => state.recensioni);
+  const { tutte, loading, error, totalPages } = useSelector((state) => state.recensioni);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    dispatch(fetchTutteLeRecensioni());
-  }, [dispatch]);
+    dispatch(fetchTutteLeRecensioni(currentPage));
+  }, [dispatch, currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPagination = () => {
+    const items = [];
+    for (let number = 0; number < totalPages; number++) {
+      items.push(
+        <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
+          {number + 1}
+        </Pagination.Item>
+      );
+    }
+    return <Pagination className="pagination-retro">{items}</Pagination>;
+  };
 
   return (
     <Container className="mt-5 recensioni-container text-center">
@@ -46,6 +63,8 @@ const RecensioniPage = () => {
             ))
           : !loading && <p className="text-center">Nessuna recensione disponibile.</p>}
       </Row>
+
+      {!loading && totalPages > 1 && renderPagination()}
     </Container>
   );
 };

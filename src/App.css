@@ -625,3 +625,39 @@ body {
 .data-recensione-evidenziata {
   color: #00ccff;
 }
+
+.pagination-retro {
+  display: flex;
+  justify-content: center;
+  gap: 8px; /* spazio tra i bottoni */
+  margin-top: 20px;
+  font-family: "Courier New", Courier, monospace; /* font retrò */
+}
+
+.pagination-retro .page-item {
+  border: 2px solid #f4c430; /* giallo vintage */
+  border-radius: 6px;
+  background-color: #2d2d2d; /* sfondo scuro */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-retro .page-item.active {
+  background-color: #f4c430;
+  color: #2d2d2d;
+  font-weight: bold;
+  box-shadow: 0 0 8px #f4c430;
+}
+
+.pagination-retro .page-item:hover:not(.active) {
+  background-color: #f4c430;
+  color: #2d2d2d;
+  cursor: pointer;
+}
+
+.pagination-retro .page-link {
+  color: #f4c430;
+  padding: 6px 12px;
+  border: none;
+  font-size: 16px;
+  user-select: none;
+}

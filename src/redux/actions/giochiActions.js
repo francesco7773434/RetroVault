@@ -226,17 +226,25 @@ export const logoutUser = () => {
   };
 };
 
-export const fetchTutteLeRecensioni = () => {
+export const fetchTutteLeRecensioni = (page = 0) => {
+  const limitedPage = page > 9 ? 9 : page;
+
   return async (dispatch) => {
     try {
       dispatch({ type: "FETCH_ALL_RECENSIONI_REQUEST" });
 
-      const response = await fetch("http://localhost:8082/recensioni/recensioni?page=0&size=100");
+      const response = await fetch(`http://localhost:8082/recensioni/recensioni?page=${limitedPage}&size=10`);
       if (!response.ok) throw new Error("Errore nel caricamento delle recensioni");
 
       const data = await response.json();
-      console.log(data);
-      dispatch({ type: "FETCH_ALL_RECENSIONI_SUCCESS", payload: data.content });
+      dispatch({
+        type: "FETCH_ALL_RECENSIONI_SUCCESS",
+        payload: {
+          recensioni: data.content,
+
+          totalPages: 10,
+        },
+      });
     } catch (error) {
       dispatch({ type: "FETCH_ALL_RECENSIONI_FAILURE", payload: error.message });
     }

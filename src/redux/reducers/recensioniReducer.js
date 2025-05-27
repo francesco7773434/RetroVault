@@ -10,6 +10,7 @@ const initialState = {
 
   errorDelete: null,
   successDelete: false,
+  totalPages: 0,
 };
 
 const recensioniReducer = (state = initialState, action) => {
@@ -33,8 +34,12 @@ const recensioniReducer = (state = initialState, action) => {
       return { ...state, loading: true, error: null };
 
     case "FETCH_ALL_RECENSIONI_SUCCESS":
-      return { ...state, loading: false, tutte: action.payload };
-
+      return {
+        ...state,
+        loading: false,
+        tutte: action.payload.recensioni,
+        totalPages: action.payload.totalPages,
+      };
     case "FETCH_ALL_RECENSIONI_FAILURE":
       return { ...state, loading: false, error: action.payload };
     case "RECENSIONE_DELETE_REQUEST":
