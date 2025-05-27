@@ -30,11 +30,15 @@ const RecensioniPage = () => {
                   <Card.Body>
                     <Card.Title className="retro-font recensione-gioco">{recensione.titoloGioco}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted recensione-utente">
-                      <strong className="recensione-utente">Utente:</strong> {recensione.usernameUtente}
+                      <strong className="recensione-utente">Utente:</strong> <span className="nome-utente-evidenziato">{recensione.usernameUtente}</span>
                     </Card.Subtitle>
                     <Card.Text className="recensione-testo">"{recensione.commento}"</Card.Text>
                     <p className="recensione-voto">
                       <strong>Voto:</strong> <span className="retro-voto">{recensione.voto}/10</span>
+                    </p>
+                    <p className="recensione-data">
+                      <strong>Data:</strong>{" "}
+                      <span className="data-recensione-evidenziata">{new Date(recensione.dataRecensione).toISOString().slice(0, 10)}</span>
                     </p>
                   </Card.Body>
                 </Card>

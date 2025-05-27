@@ -617,3 +617,11 @@ body {
   color: #0ff;
   border: 1px solid #0ff;
 }
+
+.nome-utente-evidenziato {
+  color: #ffcc00;
+}
+
+.data-recensione-evidenziata {
+  color: #00ccff;
+}

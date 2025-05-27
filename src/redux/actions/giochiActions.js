@@ -231,7 +231,7 @@ export const fetchTutteLeRecensioni = () => {
     try {
       dispatch({ type: "FETCH_ALL_RECENSIONI_REQUEST" });
 
-      const response = await fetch("http://localhost:8082/recensioni/recensioni?page=0&size=10");
+      const response = await fetch("http://localhost:8082/recensioni/recensioni?page=0&size=100");
       if (!response.ok) throw new Error("Errore nel caricamento delle recensioni");
 
       const data = await response.json();

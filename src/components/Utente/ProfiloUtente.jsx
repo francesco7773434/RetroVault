@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile, updateUserProfile, fetchRecensioniByUser } from "../../redux/actions/giochiActions";
+import { fetchUserProfile, updateUserProfile, fetchRecensioniByUser, deleteRecensione } from "../../redux/actions/giochiActions";
 import { Container, Row, Col, Button, Spinner, Alert, Modal, Form, Image } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
 
 const ProfiloUtente = () => {
   const dispatch = useDispatch();
   const { user, loading, error, updateSuccess } = useSelector((state) => state.auth);
-  const { recensioniUtente, loading: recensioniLoading, error: recensioniError } = useSelector((state) => state.recensioni);
+  const { recensioniUtente, loading: recensioniLoading, error: recensioniError, successDelete, errorDelete } = useSelector((state) => state.recensioni);
 
   const [showModal, setShowModal] = useState(false);
   const [justSubmitted, setJustSubmitted] = useState(false);
@@ -56,6 +56,23 @@ const ProfiloUtente = () => {
     setShowModal(false);
     setJustSubmitted(true);
   };
+
+  const handleDeleteRecensione = (recensioneId) => {
+    if (window.confirm("Sei sicuro di voler eliminare questa recensione?")) {
+      dispatch(deleteRecensione(recensioneId)).then(() => {
+        dispatch(fetchRecensioniByUser(user.id));
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (successDelete || errorDelete) {
+      const timer = setTimeout(() => {
+        dispatch({ type: "RESET_SUCCESS_DELETE" });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [dispatch, successDelete, errorDelete]);
 
   if (!user && !loading) {
     return <Navigate to="/login" replace />;
@@ -126,6 +143,11 @@ const ProfiloUtente = () => {
                 <p>
                   <strong>Voto:</strong> {recensione.voto}
                 </p>
+                <div className="text-end">
+                  <Button variant="danger" size="sm" onClick={() => handleDeleteRecensione(recensione.id)}>
+                    🗑 Elimina
+                  </Button>
+                </div>
               </div>
             </Col>
           ))}
