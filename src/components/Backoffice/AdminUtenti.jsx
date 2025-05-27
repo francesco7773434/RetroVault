@@ -1,15 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { eliminaUtente, fetchUtenti } from "../../redux/actions/giochiActions";
 import { Alert, Button, Container, Spinner, Table } from "react-bootstrap";
 
 const AdminUtenti = () => {
   const dispatch = useDispatch();
-  const { lista, loading, error, deleteSuccess } = useSelector((state) => state.utenti);
+  const { lista, loading, error, deleteSuccess, errorDelete } = useSelector((state) => state.utenti);
+
+  const [deleteMessage, setDeleteMessage] = useState("");
 
   useEffect(() => {
     dispatch(fetchUtenti());
-  }, [dispatch, deleteSuccess]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (deleteSuccess) {
+      setDeleteMessage("Utente eliminato con successo!");
+
+      const timer = setTimeout(() => {
+        setDeleteMessage("");
+        dispatch({ type: "RESET_DELETE_UTENTE" });
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [deleteSuccess, dispatch]);
 
   const handleDelete = (id) => {
     if (window.confirm("Sei sicuro di voler eliminare questo utente?")) dispatch(eliminaUtente(id));
@@ -17,6 +32,8 @@ const AdminUtenti = () => {
   return (
     <Container className="mt-5 admin-retro">
       <h2 className="mb-4">Gestione Utenti</h2>
+      {deleteMessage && <Alert variant="success">{deleteMessage}</Alert>}
+      {errorDelete && <Alert variant="danger">{errorDelete}</Alert>}
 
       {loading && (
         <div className="text-center">

@@ -406,9 +406,11 @@ export const eliminaUtente = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (!response.ok) throw new Error("Errore nell'eliminazione dell'utente");
-    const data = await response.json();
-    console.log(data);
+
+    if (!response.ok) {
+      throw new Error("Errore nell'eliminazione dell'utente");
+    }
+
     dispatch({ type: "DELETE_UTENTE_SUCCESS", payload: id });
   } catch (error) {
     dispatch({ type: "DELETE_UTENTE_FAILURE", payload: error.message });
