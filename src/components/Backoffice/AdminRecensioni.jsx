@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { aggiornaRecensione, deleteRecensione, fetchTutteLeRecensioni } from "../../redux/actions/giochiActions";
-import { Alert, Button, Form, Modal, Spinner, Table } from "react-bootstrap";
+import { Alert, Button, Form, Modal, Spinner, Table, Pagination } from "react-bootstrap";
 
 const AdminRecensioni = () => {
   const dispatch = useDispatch();
-  const { tutte, loading, error, successDelete } = useSelector((state) => state.recensioni);
+  const { tutte, loading, error, successDelete, totalPages } = useSelector((state) => state.recensioni);
 
   const [selectedRecensione, setSelectedRecensione] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -15,9 +15,12 @@ const AdminRecensioni = () => {
     voto: 0,
     giocoId: 0,
   });
+
+  const [currentPage, setCurrentPage] = useState(0);
+
   useEffect(() => {
-    dispatch(fetchTutteLeRecensioni());
-  }, [dispatch, successDelete]);
+    dispatch(fetchTutteLeRecensioni(currentPage, 10)); // 10 recensioni per pagina
+  }, [dispatch, currentPage, successDelete]);
 
   const handleOpenModal = (recensione) => {
     setSelectedRecensione(recensione);
@@ -54,6 +57,23 @@ const AdminRecensioni = () => {
       dispatch(deleteRecensione(id));
     }
   };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPagination = () => {
+    const items = [];
+    for (let number = 0; number < totalPages; number++) {
+      items.push(
+        <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
+          {number + 1}
+        </Pagination.Item>
+      );
+    }
+    return <Pagination className="pagination-retro justify-content-center mt-3">{items}</Pagination>;
+  };
+
   return (
     <div className="container mt-5 admin-retro">
       <h2 className="mb-4">Gestione Recensioni</h2>
@@ -81,7 +101,7 @@ const AdminRecensioni = () => {
         <tbody>
           {tutte.length === 0 ? (
             <tr>
-              <td colSpan="5" className="text-center">
+              <td colSpan="7" className="text-center">
                 Nessuna recensione trovata
               </td>
             </tr>
@@ -91,8 +111,8 @@ const AdminRecensioni = () => {
                 <td>{recensione.id}</td>
                 <td>{recensione.voto}</td>
                 <td>{recensione.commento}</td>
-                <td>{recensione.titoloGioco}</td>
                 <td>{recensione.usernameUtente}</td>
+                <td>{recensione.titoloGioco}</td>
                 <td>{recensione.giocoId || recensione.gioco?.id || "?"}</td>
                 <td>
                   <Button variant="warning" size="sm" className="me-2" onClick={() => handleOpenModal(recensione)}>
@@ -107,6 +127,8 @@ const AdminRecensioni = () => {
           )}
         </tbody>
       </Table>
+
+      {!loading && totalPages > 1 && renderPagination()}
 
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
