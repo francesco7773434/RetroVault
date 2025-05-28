@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGiochi } from "../../redux/actions/giochiActions";
-import { Container, Row, Col, Card, Button, Spinner, Alert, Pagination } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Spinner, Alert, Pagination, Form } from "react-bootstrap";
 
 const Catalogo = () => {
   const dispatch = useDispatch();
   const { giochi, loading, error, totalPages } = useSelector((state) => state.giochi);
   const [currentPage, setCurrentPage] = useState(0);
+  const [titolo, setTitolo] = useState("");
 
   useEffect(() => {
-    dispatch(fetchGiochi(currentPage));
-  }, [dispatch, currentPage]);
+    console.log("Stato giochi aggiornato:", giochi);
+    const cleanTitolo = titolo.trim();
+
+    dispatch(fetchGiochi(currentPage, 9, cleanTitolo));
+  }, [dispatch, currentPage, titolo]);
+
+  const handleTitoloChange = (e) => {
+    setTitolo(e.target.value);
+    setCurrentPage(0);
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -31,6 +40,9 @@ const Catalogo = () => {
   return (
     <Container className="catalogo-container text-center">
       <h2 className="retro-title mb-5 mt-3">I Nostri Giochi</h2>
+      <Form className="mb-4 d-flex justify-content-center gap-3">
+        <Form.Control type="text" placeholder="Cerca per titolo" value={titolo} onChange={handleTitoloChange} style={{ maxWidth: "300px" }} />
+      </Form>
 
       {loading && <Spinner animation="border" variant="warning" />}
       {error && <Alert variant="danger">{error}</Alert>}

@@ -1,12 +1,29 @@
-export const fetchGiochi = (page = 0, size = 9) => {
+export const fetchGiochi = (page = 0, size = 9, titolo = "", anno = "") => {
   return async (dispatch) => {
     try {
       dispatch({ type: "FETCH_GIOCHI_REQUEST" });
 
-      const response = await fetch(`http://localhost:8082/giochi/all?page=${page}&size=${size}&sort=titolo`);
+      const params = new URLSearchParams({
+        page,
+        size,
+        sort: "titolo",
+      });
+
+      let url = "";
+
+      if (!titolo && !anno) {
+        url = `http://localhost:8082/giochi/all?${params.toString()}`;
+      } else {
+        if (titolo) params.append("titolo", titolo);
+        if (anno) params.append("anno", anno);
+        url = `http://localhost:8082/giochi/search?${params.toString()}`;
+      }
+
+      const response = await fetch(url);
       if (!response.ok) throw new Error("Errore nel caricamento");
 
       const data = await response.json();
+      console.log("DATA ARRIVATA:", data);
 
       dispatch({
         type: "FETCH_GIOCHI_SUCCESS",
@@ -20,7 +37,6 @@ export const fetchGiochi = (page = 0, size = 9) => {
     }
   };
 };
-
 export const fetchGiocoById = (id) => {
   return async (dispatch) => {
     try {
