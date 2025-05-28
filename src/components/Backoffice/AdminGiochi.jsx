@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { creaGioco, eliminaGioco, fetchGiochi, modificaGioco } from "../../redux/actions/giochiActions";
-import { Alert, Button, Form, Modal, Spinner, Table } from "react-bootstrap";
+import { Alert, Button, Form, Modal, Pagination, Spinner, Table } from "react-bootstrap";
 
 const AdminGiochi = () => {
   const dispatch = useDispatch();
-  const { giochi, loading, error } = useSelector((state) => state.giochi);
+  const { giochi, loading, error, totalPages } = useSelector((state) => state.giochi);
 
   const [showModal, setShowModal] = useState(false);
   const [editingGioco, setEditingGioco] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
   const [formData, setFormData] = useState({
     titolo: "",
     descrizione: "",
@@ -19,8 +20,8 @@ const AdminGiochi = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchGiochi());
-  }, [dispatch]);
+    dispatch(fetchGiochi(currentPage));
+  }, [dispatch, currentPage]);
 
   const handleShowModal = (gioco = null) => {
     if (gioco) {
@@ -68,6 +69,22 @@ const AdminGiochi = () => {
     if (window.confirm("Sei sicuro di voler eliminare questo gioco?")) {
       dispatch(eliminaGioco(id));
     }
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPagination = () => {
+    const items = [];
+    for (let number = 0; number < totalPages; number++) {
+      items.push(
+        <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
+          {number + 1}
+        </Pagination.Item>
+      );
+    }
+    return <Pagination className="pagination-retro mt-4">{items}</Pagination>;
   };
 
   return (
@@ -121,6 +138,7 @@ const AdminGiochi = () => {
           ))}
         </tbody>
       </Table>
+      {!loading && totalPages > 1 && renderPagination()}
 
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>

@@ -393,23 +393,35 @@ export const loadUserFromLocalStorage = () => (dispatch) => {
   }
 };
 
-export const fetchUtenti = () => async (dispatch, getState) => {
-  dispatch({ type: "FETCH_UTENTI_REQUEST" });
-  try {
-    const token = getState().auth.token || localStorage.getItem("token");
-    const response = await fetch("http://localhost:8082/utenti", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!response.ok) throw new Error("Errore nel caricamento degli utenti");
-    const data = await response.json();
-    console.log(data);
-    dispatch({ type: "FETCH_UTENTI_SUCCESS", payload: data.content || data });
-  } catch (error) {
-    dispatch({ type: "FETCH_UTENTI_FAILURE", payload: error.message });
-  }
-};
+export const fetchUtenti =
+  (page = 0) =>
+  async (dispatch, getState) => {
+    dispatch({ type: "FETCH_UTENTI_REQUEST" });
+    try {
+      const token = getState().auth.token || localStorage.getItem("token");
+
+      const response = await fetch(`http://localhost:8082/utenti?page=${page}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Errore nel caricamento degli utenti");
+
+      const data = await response.json();
+      console.log(data);
+
+      dispatch({
+        type: "FETCH_UTENTI_SUCCESS",
+        payload: {
+          lista: data.content || data,
+          totalPages: data.totalPages || 1,
+        },
+      });
+    } catch (error) {
+      dispatch({ type: "FETCH_UTENTI_FAILURE", payload: error.message });
+    }
+  };
 
 export const eliminaUtente = (id) => async (dispatch, getState) => {
   dispatch({ type: "DELETE_UTENTE_REQUEST" });

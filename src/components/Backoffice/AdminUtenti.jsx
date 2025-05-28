@@ -1,17 +1,32 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { eliminaUtente, fetchUtenti } from "../../redux/actions/giochiActions";
-import { Alert, Button, Container, Spinner, Table } from "react-bootstrap";
+import { Alert, Button, Container, Pagination, Spinner, Table } from "react-bootstrap";
 
 const AdminUtenti = () => {
   const dispatch = useDispatch();
-  const { lista, loading, error, deleteSuccess, errorDelete } = useSelector((state) => state.utenti);
+  const { lista, loading, error, deleteSuccess, errorDelete, totalPages } = useSelector((state) => state.utenti);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const [deleteMessage, setDeleteMessage] = useState("");
 
   useEffect(() => {
-    dispatch(fetchUtenti());
-  }, [dispatch]);
+    dispatch(fetchUtenti(currentPage));
+  }, [dispatch, currentPage]);
+
+  const handlePageChange = (page) => setCurrentPage(page);
+
+  const renderPagination = () => {
+    const items = [];
+    for (let number = 0; number < totalPages; number++) {
+      items.push(
+        <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
+          {number + 1}
+        </Pagination.Item>
+      );
+    }
+    return <Pagination className="pagination-retro mt-4">{items}</Pagination>;
+  };
 
   useEffect(() => {
     if (deleteSuccess) {
@@ -75,6 +90,7 @@ const AdminUtenti = () => {
           ))}
         </tbody>
       </Table>
+      {!loading && totalPages > 1 && renderPagination()}
     </Container>
   );
 };

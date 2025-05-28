@@ -3,6 +3,7 @@ const initialState = {
   error: null,
   lista: [],
   deleteSuccess: false,
+  totalPages: 0,
 };
 
 const utentiReducer = (state = initialState, action) => {
@@ -10,7 +11,7 @@ const utentiReducer = (state = initialState, action) => {
     case "FETCH_UTENTI_REQUEST":
       return { ...state, loading: true, error: null };
     case "FETCH_UTENTI_SUCCESS":
-      return { ...state, loading: false, lista: action.payload };
+      return { ...state, loading: false, lista: action.payload.lista, totalPages: action.payload.totalPages };
     case "FETCH_UTENTI_FAILURE":
       return { ...state, loading: false, error: action.payload };
     case "DELETE_UTENTE_REQUEST":
