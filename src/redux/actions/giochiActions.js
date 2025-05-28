@@ -1,14 +1,20 @@
-export const fetchGiochi = () => {
+export const fetchGiochi = (page = 0, size = 9) => {
   return async (dispatch) => {
     try {
       dispatch({ type: "FETCH_GIOCHI_REQUEST" });
 
-      const response = await fetch("http://localhost:8082/giochi/all?page=0&size=30&sort=titolo");
+      const response = await fetch(`http://localhost:8082/giochi/all?page=${page}&size=${size}&sort=titolo`);
       if (!response.ok) throw new Error("Errore nel caricamento");
 
       const data = await response.json();
-      console.log(data);
-      dispatch({ type: "FETCH_GIOCHI_SUCCESS", payload: data.content });
+
+      dispatch({
+        type: "FETCH_GIOCHI_SUCCESS",
+        payload: {
+          content: data.content,
+          totalPages: data.totalPages,
+        },
+      });
     } catch (error) {
       dispatch({ type: "FETCH_GIOCHI_FAILURE", payload: error.message });
     }

@@ -1,19 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGiochi } from "../../redux/actions/giochiActions";
-import { Container, Row, Col, Card, Button, Spinner, Alert } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Spinner, Alert, Pagination } from "react-bootstrap";
 
 const Catalogo = () => {
   const dispatch = useDispatch();
-  const { giochi, loading, error } = useSelector((state) => state.giochi);
+  const { giochi, loading, error, totalPages } = useSelector((state) => state.giochi);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    dispatch(fetchGiochi());
-  }, [dispatch]);
+    dispatch(fetchGiochi(currentPage));
+  }, [dispatch, currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPagination = () => {
+    const items = [];
+    for (let number = 0; number < totalPages; number++) {
+      items.push(
+        <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
+          {number + 1}
+        </Pagination.Item>
+      );
+    }
+    return <Pagination className="pagination-retro mt-4">{items}</Pagination>;
+  };
 
   return (
     <Container className="catalogo-container text-center">
-      <h2 className="retro-title mb-5">I Nostri Giochi</h2>
+      <h2 className="retro-title mb-5 mt-3">I Nostri Giochi</h2>
 
       {loading && <Spinner animation="border" variant="warning" />}
       {error && <Alert variant="danger">{error}</Alert>}
@@ -39,6 +56,7 @@ const Catalogo = () => {
             ))
           : !loading && <p>Nessun gioco trovato.</p>}
       </Row>
+      {!loading && totalPages > 1 && renderPagination()}
     </Container>
   );
 };

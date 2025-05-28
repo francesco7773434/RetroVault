@@ -3,6 +3,7 @@ const initialState = {
   error: null,
   giochi: [],
   giocoSingolo: null,
+  totalPages: 0,
 };
 
 const giochiReducer = (state = initialState, action) => {
@@ -11,7 +12,7 @@ const giochiReducer = (state = initialState, action) => {
     case "FETCH_GIOCO_REQUEST":
       return { ...state, loading: true, error: null };
     case "FETCH_GIOCHI_SUCCESS":
-      return { ...state, loading: false, giochi: action.payload };
+      return { ...state, loading: false, giochi: action.payload.content, totalPages: action.payload.totalPages };
     case "FETCH_GIOCO_SUCCESS":
       return { ...state, loading: false, giocoSingolo: action.payload };
     case "FETCH_GIOCHI_FAILURE":
