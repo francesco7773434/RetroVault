@@ -180,6 +180,7 @@ export const aggiornaRecensione = (recensioneId, updateData) => {
 export const loginUser = (credentials) => async (dispatch) => {
   try {
     dispatch({ type: "AUTH_REQUEST" });
+
     const response = await fetch("http://localhost:8082/utenti/login", {
       method: "POST",
       headers: {
@@ -187,20 +188,26 @@ export const loginUser = (credentials) => async (dispatch) => {
       },
       body: JSON.stringify(credentials),
     });
-    if (!response.ok) {
-      throw new Error("Errore nella registrazione");
+
+    let data = {};
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+      data = await response.json();
     }
-    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error(data.message || "Errore durante il login");
+      const errorMessage = data?.message || "Inserisci credenziali valide";
+      throw new Error(errorMessage);
     }
+
     if (data.user) {
       localStorage.setItem("user", JSON.stringify(data.user));
     }
     if (data.token) {
       localStorage.setItem("token", data.token);
     }
-    console.log(data);
+
     dispatch({
       type: "AUTH_SUCCESS",
       payload: {
