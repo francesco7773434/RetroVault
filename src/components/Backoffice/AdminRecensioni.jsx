@@ -9,6 +9,7 @@ const AdminRecensioni = () => {
 
   const [selectedRecensione, setSelectedRecensione] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [titoloGioco, setTitoloGioco] = useState("");
 
   const [formData, setFormData] = useState({
     commento: "",
@@ -19,9 +20,13 @@ const AdminRecensioni = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    dispatch(fetchTutteLeRecensioni(currentPage, 10)); // 10 recensioni per pagina
-  }, [dispatch, currentPage, successDelete]);
+    dispatch(fetchTutteLeRecensioni(currentPage, titoloGioco));
+  }, [dispatch, currentPage, titoloGioco, successDelete]);
 
+  const handleTitoloChange = (e) => {
+    setTitoloGioco(e.target.value);
+    setCurrentPage(0);
+  };
   const handleOpenModal = (recensione) => {
     setSelectedRecensione(recensione);
     setFormData({
@@ -85,6 +90,9 @@ const AdminRecensioni = () => {
       )}
 
       {error && <Alert variant="danger">{error}</Alert>}
+      <Form className="mb-4 d-flex justify-content-center gap-3">
+        <Form.Control type="text" placeholder="Cerca per titolo del gioco" value={titoloGioco} onChange={handleTitoloChange} style={{ maxWidth: "300px" }} />
+      </Form>
 
       <Table striped bordered hover responsive>
         <thead>

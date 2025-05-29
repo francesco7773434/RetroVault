@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTutteLeRecensioni } from "../../redux/actions/giochiActions";
-import { Container, Row, Col, Card, Spinner, Alert, Pagination } from "react-bootstrap";
+import { Container, Row, Col, Card, Spinner, Alert, Pagination, Form } from "react-bootstrap";
 
 const RecensioniPage = () => {
   const dispatch = useDispatch();
   const { tutte, loading, error, totalPages } = useSelector((state) => state.recensioni);
   const [currentPage, setCurrentPage] = useState(0);
+  const [titoloGioco, setTitoloGioco] = useState("");
 
   useEffect(() => {
-    dispatch(fetchTutteLeRecensioni(currentPage));
-  }, [dispatch, currentPage]);
+    dispatch(fetchTutteLeRecensioni(currentPage, titoloGioco));
+  }, [dispatch, currentPage, titoloGioco]);
+
+  const handleTitoloChange = (e) => {
+    setTitoloGioco(e.target.value);
+    setCurrentPage(0);
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -31,6 +37,10 @@ const RecensioniPage = () => {
   return (
     <Container className="mt-5 recensioni-container text-center">
       <h2 className="retro-title mb-5">Tutte le Recensioni</h2>
+
+      <Form className="mb-4 d-flex justify-content-center gap-3">
+        <Form.Control type="text" placeholder="Cerca per titolo del gioco" value={titoloGioco} onChange={handleTitoloChange} style={{ maxWidth: "300px" }} />
+      </Form>
 
       {loading && (
         <div className="text-center">

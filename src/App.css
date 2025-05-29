@@ -675,3 +675,9 @@ body {
   font-size: 16px;
   user-select: none;
 }
+
+.pagination-retro {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
