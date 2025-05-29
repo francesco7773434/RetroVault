@@ -681,3 +681,53 @@ body {
   justify-content: center;
   gap: 5px;
 }
+
+.retro-modal .modal-content {
+  background: linear-gradient(to bottom, #111, #222);
+  color: rgb(87, 28, 196);
+  border: 2px solid #0f0;
+  font-family: "Press Start 2P", cursive;
+  box-shadow: 0 0 10px #0f0;
+}
+
+.retro-modal-header,
+.retro-modal-footer {
+  border: none;
+}
+
+.retro-modal-title {
+  color: #0ff;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.retro-modal-body {
+  font-size: 0.85rem;
+  color: rgb(177, 16, 16);
+}
+
+.retro-btn-delete {
+  background-color: #f00;
+  border: 2px solid #0f0;
+  color: #fff;
+  font-weight: bold;
+}
+
+.retro-btn-cancel {
+  background-color: transparent;
+  border: 2px solid #0ff;
+  color: #0ff;
+  font-weight: bold;
+}
+
+.retro-btn-delete:hover {
+  background-color: #c00;
+  border-color: #ff0;
+}
+
+.retro-btn-cancel:hover {
+  background-color: #011;
+  color: #fff;
+  border-color: #0f0;
+}

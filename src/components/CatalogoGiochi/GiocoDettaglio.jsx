@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 import { creaRecensione, deleteRecensione, fetchGiocoById, fetchRecensioniByGiocoId } from "../../redux/actions/giochiActions";
-import { Container, Row, Col, Card, Spinner, Alert, Button, Form } from "react-bootstrap";
+import { Container, Row, Col, Card, Spinner, Alert, Button, Form, Modal } from "react-bootstrap";
 
 const GiocoDettaglio = () => {
   const { id } = useParams();
@@ -16,7 +16,6 @@ const GiocoDettaglio = () => {
     loadingCreate,
     errorCreate,
     successCreate,
-
     successDelete,
     errorDelete,
   } = useSelector((state) => state.recensioni);
@@ -25,6 +24,9 @@ const GiocoDettaglio = () => {
 
   const [voto, setVoto] = useState("");
   const [commento, setCommento] = useState("");
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [recensioneSelezionata, setRecensioneSelezionata] = useState(null);
 
   useEffect(() => {
     dispatch(fetchGiocoById(id));
@@ -42,7 +44,6 @@ const GiocoDettaglio = () => {
       const timer = setTimeout(() => {
         dispatch({ type: "RESET_SUCCESS_CREATE" });
       }, 2000);
-
       return () => clearTimeout(timer);
     }
   }, [dispatch, successCreate]);
@@ -68,10 +69,24 @@ const GiocoDettaglio = () => {
     setCommento("");
   };
 
-  const handleDelete = (recensioneId) => {
-    dispatch(deleteRecensione(recensioneId)).then(() => {
-      dispatch(fetchRecensioniByGiocoId(id));
-    });
+  const apriModaleConferma = (recensioneId) => {
+    setRecensioneSelezionata(recensioneId);
+    setShowConfirmModal(true);
+  };
+
+  const confermaEliminazione = () => {
+    if (recensioneSelezionata) {
+      dispatch(deleteRecensione(recensioneSelezionata)).then(() => {
+        dispatch(fetchRecensioniByGiocoId(id));
+      });
+      setShowConfirmModal(false);
+      setRecensioneSelezionata(null);
+    }
+  };
+
+  const annullaEliminazione = () => {
+    setShowConfirmModal(false);
+    setRecensioneSelezionata(null);
   };
 
   if (loading) return <Spinner animation="border" variant="warning" />;
@@ -108,21 +123,17 @@ const GiocoDettaglio = () => {
           </Link>
           <Form onSubmit={handleSubmit} className="mt-4 mb-5 retro-description-box p-3 retro-review-card">
             <h4>Aggiungi una recensione</h4>
-
             <Form.Group controlId="voto" className="mb-3">
               <Form.Label>Voto (1-10)</Form.Label>
               <Form.Control type="number" min="1" max="10" value={voto} onChange={(e) => setVoto(e.target.value)} required />
             </Form.Group>
-
             <Form.Group controlId="commento" className="mb-3">
               <Form.Label>Commento</Form.Label>
               <Form.Control as="textarea" rows={3} value={commento} onChange={(e) => setCommento(e.target.value)} required />
             </Form.Group>
-
             <Button variant="primary" type="submit" disabled={loadingCreate}>
               {loadingCreate ? "Invio..." : "Invia Recensione"}
             </Button>
-
             {errorCreate && (
               <Alert variant="danger" className="mt-3">
                 {errorCreate}
@@ -154,7 +165,7 @@ const GiocoDettaglio = () => {
               <strong>Data:</strong> {recensione.dataRecensione}
               {user && recensione.utenteId === user.id && (
                 <div className="text-end mt-2">
-                  <Button variant="danger" size="sm" onClick={() => handleDelete(recensione.id)}>
+                  <Button variant="danger" size="sm" onClick={() => apriModaleConferma(recensione.id)}>
                     🗑 Elimina la tua recensione
                   </Button>
                 </div>
@@ -173,6 +184,24 @@ const GiocoDettaglio = () => {
           </Alert>
         )}
       </div>
+
+      <Modal show={showConfirmModal} onHide={annullaEliminazione} centered dialogClassName="retro-modal">
+        <Modal.Header closeButton className="retro-modal-header">
+          <Modal.Title className="retro-modal-title">🕹 Conferma Eliminazione</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="retro-modal-body">
+          Sei sicuro di voler eliminare questa recensione? <br />
+          <strong className="text-danger">L'azione è irreversibile.</strong>
+        </Modal.Body>
+        <Modal.Footer className="retro-modal-footer">
+          <Button variant="outline-light" className="retro-btn-cancel" onClick={annullaEliminazione}>
+            ❌ Annulla
+          </Button>
+          <Button variant="danger" className="retro-btn-delete" onClick={confermaEliminazione}>
+            ✅ Elimina
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };
