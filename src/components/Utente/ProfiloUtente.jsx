@@ -11,6 +11,9 @@ const ProfiloUtente = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [justSubmitted, setJustSubmitted] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [recensioneSelezionata, setRecensioneSelezionata] = useState(null);
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -57,12 +60,24 @@ const ProfiloUtente = () => {
     setJustSubmitted(true);
   };
 
-  const handleDeleteRecensione = (recensioneId) => {
-    if (window.confirm("Sei sicuro di voler eliminare questa recensione?")) {
-      dispatch(deleteRecensione(recensioneId)).then(() => {
+  const apriModaleConferma = (recensioneId) => {
+    setRecensioneSelezionata(recensioneId);
+    setShowConfirmModal(true);
+  };
+
+  const confermaEliminazione = () => {
+    if (recensioneSelezionata) {
+      dispatch(deleteRecensione(recensioneSelezionata)).then(() => {
         dispatch(fetchRecensioniByUser(user.id));
       });
+      setShowConfirmModal(false);
+      setRecensioneSelezionata(null);
     }
+  };
+
+  const annullaEliminazione = () => {
+    setShowConfirmModal(false);
+    setRecensioneSelezionata(null);
   };
 
   useEffect(() => {
@@ -144,7 +159,7 @@ const ProfiloUtente = () => {
                   <strong>Voto:</strong> {recensione.voto}
                 </p>
                 <div className="text-end">
-                  <Button variant="danger" size="sm" onClick={() => handleDeleteRecensione(recensione.id)}>
+                  <Button variant="danger" size="sm" onClick={() => apriModaleConferma(recensione.id)}>
                     🗑 Elimina
                   </Button>
                 </div>
@@ -184,6 +199,24 @@ const ProfiloUtente = () => {
             </Button>
           </Modal.Footer>
         </Form>
+      </Modal>
+
+      <Modal show={showConfirmModal} onHide={annullaEliminazione} centered dialogClassName="retro-modal">
+        <Modal.Header closeButton className="retro-modal-header">
+          <Modal.Title className="retro-modal-title">🕹 Conferma Eliminazione</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="retro-modal-body">
+          Sei sicuro di voler eliminare questa recensione? <br />
+          <strong className="text-danger">L'azione è irreversibile.</strong>
+        </Modal.Body>
+        <Modal.Footer className="retro-modal-footer">
+          <Button variant="outline-light" className="retro-btn-cancel" onClick={annullaEliminazione}>
+            ❌ Annulla
+          </Button>
+          <Button variant="danger" className="retro-btn-delete" onClick={confermaEliminazione}>
+            ✅ Elimina
+          </Button>
+        </Modal.Footer>
       </Modal>
     </Container>
   );
