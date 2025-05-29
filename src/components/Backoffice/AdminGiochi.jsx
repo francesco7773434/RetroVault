@@ -10,6 +10,7 @@ const AdminGiochi = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingGioco, setEditingGioco] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [titolo, setTitolo] = useState("");
   const [formData, setFormData] = useState({
     titolo: "",
     descrizione: "",
@@ -20,8 +21,9 @@ const AdminGiochi = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchGiochi(currentPage));
-  }, [dispatch, currentPage]);
+    const cleanTitolo = titolo.trim();
+    dispatch(fetchGiochi(currentPage, 9, cleanTitolo));
+  }, [dispatch, currentPage, titolo]);
 
   const handleShowModal = (gioco = null) => {
     if (gioco) {
@@ -101,6 +103,18 @@ const AdminGiochi = () => {
       <Button variant="primary" onClick={() => handleShowModal()}>
         + Aggiungi Nuovo Gioco
       </Button>
+      <Form className="my-3 d-flex justify-content-end">
+        <Form.Control
+          type="text"
+          placeholder="Cerca per titolo"
+          value={titolo}
+          onChange={(e) => {
+            setTitolo(e.target.value);
+            setCurrentPage(0);
+          }}
+          style={{ maxWidth: "300px" }}
+        />
+      </Form>
 
       <Table striped bordered hover responsive className="mt-3">
         <thead>
