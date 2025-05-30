@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile, updateUserProfile, fetchRecensioniByUser, deleteRecensione } from "../../redux/actions/giochiActions";
-import { Container, Row, Col, Button, Spinner, Alert, Modal, Form, Image } from "react-bootstrap";
+import { deleteRecensione, fetchRecensioniByUser, fetchUserProfile, updateUserProfile } from "../../redux/actions/giochiActions";
 import { Navigate } from "react-router-dom";
+import { Alert, Button, Col, Container, Form, Image, Modal, Row, Spinner } from "react-bootstrap";
 
 const ProfiloUtente = () => {
   const dispatch = useDispatch();
@@ -13,6 +13,7 @@ const ProfiloUtente = () => {
   const [justSubmitted, setJustSubmitted] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [recensioneSelezionata, setRecensioneSelezionata] = useState(null);
+  const [deleteMessage, setDeleteMessage] = useState("");
 
   const [formData, setFormData] = useState({
     username: "",
@@ -69,6 +70,8 @@ const ProfiloUtente = () => {
     if (recensioneSelezionata) {
       dispatch(deleteRecensione(recensioneSelezionata)).then(() => {
         dispatch(fetchRecensioniByUser(user.id));
+        setDeleteMessage("Recensione eliminata con successo!");
+        setTimeout(() => setDeleteMessage(""), 3000);
       });
       setShowConfirmModal(false);
       setRecensioneSelezionata(null);
@@ -141,6 +144,8 @@ const ProfiloUtente = () => {
       )}
 
       <h3 className="mt-5">📝 Le tue recensioni:</h3>
+      {deleteMessage && <Alert variant="success">{deleteMessage}</Alert>}
+      {errorDelete && <Alert variant="danger">Errore nell'eliminazione della recensione: {errorDelete}</Alert>}
       {recensioniLoading ? (
         <Spinner animation="border" variant="info" />
       ) : recensioniError ? (

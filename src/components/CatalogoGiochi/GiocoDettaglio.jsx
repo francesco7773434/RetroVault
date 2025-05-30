@@ -9,6 +9,7 @@ const GiocoDettaglio = () => {
   const dispatch = useDispatch();
 
   const { giocoSingolo, loading, error } = useSelector((state) => state.giochi);
+  const [deleteMessage, setDeleteMessage] = useState("");
   const {
     lista: recensioni,
     loading: loadingRecensioni,
@@ -78,6 +79,8 @@ const GiocoDettaglio = () => {
     if (recensioneSelezionata) {
       dispatch(deleteRecensione(recensioneSelezionata)).then(() => {
         dispatch(fetchRecensioniByGiocoId(id));
+        setDeleteMessage("Recensione eliminata con successo!");
+        setTimeout(() => setDeleteMessage(""), 3000);
       });
       setShowConfirmModal(false);
       setRecensioneSelezionata(null);
@@ -96,6 +99,7 @@ const GiocoDettaglio = () => {
   return (
     <Container className="retro-game-detail text-center">
       <h2 className="retro-title mb-5">{giocoSingolo.titolo}</h2>
+
       <Row className="align-items-center">
         <Col md={6}>
           <div className="game-image-container-detail">
@@ -134,11 +138,7 @@ const GiocoDettaglio = () => {
             <Button variant="primary" type="submit" disabled={loadingCreate}>
               {loadingCreate ? "Invio..." : "Invia Recensione"}
             </Button>
-            {errorCreate && (
-              <Alert variant="danger" className="mt-3">
-                {errorCreate}
-              </Alert>
-            )}
+            {errorCreate && <div className="retro-alert-error mt-3">{errorCreate}</div>}
             {successCreate && (
               <Alert variant="success" className="mt-3">
                 Recensione inviata con successo!
@@ -149,6 +149,7 @@ const GiocoDettaglio = () => {
       </Row>
       <div className="mt-5 text-start">
         <h3 className="retro-title">Recensioni</h3>
+        {deleteMessage && <div className="retro-alert-success mt-3">{deleteMessage}</div>}
         {loadingRecensioni && <Spinner animation="border" variant="warning" />}
         {errorRecensioni && <Alert variant="danger">{errorRecensioni}</Alert>}
         {recensioni.length === 0 && !loadingRecensioni ? (

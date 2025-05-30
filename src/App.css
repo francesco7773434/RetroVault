@@ -731,3 +731,27 @@ body {
   color: #fff;
   border-color: #0f0;
 }
+
+.retro-alert-success,
+.retro-alert-error {
+  padding: 1rem;
+  border: 2px solid;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #000;
+}
+
+.retro-alert-success {
+  background-color: #d4fcd2;
+  color: #007a00;
+  border-color: #007a00;
+}
+
+.retro-alert-error {
+  background-color: #ffdede;
+  color: #b30000;
+  border-color: #b30000;
+}
