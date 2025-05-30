@@ -10,6 +10,8 @@ const AdminRecensioni = () => {
   const [selectedRecensione, setSelectedRecensione] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [titoloGioco, setTitoloGioco] = useState("");
+  const [recensioneDaEliminare, setRecensioneDaEliminare] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const [formData, setFormData] = useState({
     commento: "",
@@ -19,9 +21,24 @@ const AdminRecensioni = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
+  const [deleteMessage, setDeleteMessage] = useState("");
+
   useEffect(() => {
     dispatch(fetchTutteLeRecensioni(currentPage, titoloGioco));
   }, [dispatch, currentPage, titoloGioco, successDelete]);
+
+  useEffect(() => {
+    if (successDelete) {
+      setDeleteMessage("Recensione eliminata con successo!");
+
+      const timer = setTimeout(() => {
+        setDeleteMessage("");
+        dispatch({ type: "RESET_SUCCESS_DELETE" });
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [successDelete, dispatch]);
 
   const handleTitoloChange = (e) => {
     setTitoloGioco(e.target.value);
@@ -57,9 +74,16 @@ const AdminRecensioni = () => {
     handleCloseModal();
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Sei sicuro di voler eliminare questa recensione?")) {
-      dispatch(deleteRecensione(id));
+  const handleDelete = (recensione) => {
+    setRecensioneDaEliminare(recensione);
+    setShowConfirmModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (recensioneDaEliminare) {
+      dispatch(deleteRecensione(recensioneDaEliminare.id));
+      setShowConfirmModal(false);
+      setRecensioneDaEliminare(null);
     }
   };
 
@@ -82,6 +106,8 @@ const AdminRecensioni = () => {
   return (
     <div className="container mt-5 admin-retro">
       <h2 className="mb-4">Gestione Recensioni</h2>
+
+      {deleteMessage && <Alert variant="success">{deleteMessage}</Alert>}
 
       {loading && (
         <div className="text-center">
@@ -126,7 +152,7 @@ const AdminRecensioni = () => {
                   <Button variant="warning" size="sm" className="me-2" onClick={() => handleOpenModal(recensione)}>
                     Modifica
                   </Button>
-                  <Button variant="danger" size="sm" onClick={() => handleDelete(recensione.id)}>
+                  <Button variant="danger" size="sm" onClick={() => handleDelete(recensione)}>
                     Elimina
                   </Button>
                 </td>
@@ -168,6 +194,22 @@ const AdminRecensioni = () => {
             </Button>
           </Modal.Footer>
         </Form>
+      </Modal>
+      <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Conferma Eliminazione</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Sei sicuro di voler eliminare la recensione con ID <strong>{recensioneDaEliminare?.id}</strong>?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>
+            Annulla
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            Elimina
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );

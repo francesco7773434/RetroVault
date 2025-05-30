@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { eliminaUtente, fetchUtenti } from "../../redux/actions/giochiActions";
-import { Alert, Button, Container, Pagination, Spinner, Table } from "react-bootstrap";
+import { Alert, Button, Container, Modal, Pagination, Spinner, Table } from "react-bootstrap";
 
 const AdminUtenti = () => {
   const dispatch = useDispatch();
   const { lista, loading, error, deleteSuccess, errorDelete, totalPages } = useSelector((state) => state.utenti);
   const [currentPage, setCurrentPage] = useState(0);
+  const [utenteDaEliminare, setUtenteDaEliminare] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const [deleteMessage, setDeleteMessage] = useState("");
 
@@ -41,8 +43,17 @@ const AdminUtenti = () => {
     }
   }, [deleteSuccess, dispatch]);
 
-  const handleDelete = (id) => {
-    if (window.confirm("Sei sicuro di voler eliminare questo utente?")) dispatch(eliminaUtente(id));
+  const handleDelete = (utente) => {
+    setUtenteDaEliminare(utente);
+    setShowConfirmModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (utenteDaEliminare) {
+      dispatch(eliminaUtente(utenteDaEliminare.id));
+      setShowConfirmModal(false);
+      setUtenteDaEliminare(null);
+    }
   };
   return (
     <Container className="mt-5 admin-retro">
@@ -64,6 +75,7 @@ const AdminUtenti = () => {
             <th>Username</th>
             <th>Email</th>
             <th>Ruolo</th>
+
             <th>Azioni</th>
           </tr>
         </thead>
@@ -81,8 +93,9 @@ const AdminUtenti = () => {
               <td>{utente.username}</td>
               <td>{utente.email}</td>
               <td>{utente.roles}</td>
+
               <td>
-                <Button variant="danger" size="sm" onClick={() => handleDelete(utente.id)}>
+                <Button variant="danger" size="sm" onClick={() => handleDelete(utente)}>
                   Elimina
                 </Button>
               </td>
@@ -91,6 +104,22 @@ const AdminUtenti = () => {
         </tbody>
       </Table>
       {!loading && totalPages > 1 && renderPagination()}
+      <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Conferma Eliminazione</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Sei sicuro di voler eliminare l'utente <strong>{utenteDaEliminare?.username}</strong> con ID <strong>{utenteDaEliminare?.id}</strong>?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>
+            Annulla
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            Elimina
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

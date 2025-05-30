@@ -10,7 +10,6 @@ const Catalogo = () => {
   const [titolo, setTitolo] = useState("");
 
   useEffect(() => {
-    console.log("Stato giochi aggiornato:", giochi);
     const cleanTitolo = titolo.trim();
 
     dispatch(fetchGiochi(currentPage, 9, cleanTitolo));

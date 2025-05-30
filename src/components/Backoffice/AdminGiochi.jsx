@@ -11,6 +11,9 @@ const AdminGiochi = () => {
   const [editingGioco, setEditingGioco] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [titolo, setTitolo] = useState("");
+  const [giocoDaEliminare, setGiocoDaEliminare] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [formData, setFormData] = useState({
     titolo: "",
     descrizione: "",
@@ -67,9 +70,19 @@ const AdminGiochi = () => {
     handleCloseModal();
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Sei sicuro di voler eliminare questo gioco?")) {
-      dispatch(eliminaGioco(id));
+  const handleDelete = (gioco) => {
+    setGiocoDaEliminare(gioco);
+    setShowConfirmModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (giocoDaEliminare) {
+      dispatch(eliminaGioco(giocoDaEliminare.id));
+      setShowConfirmModal(false);
+      setGiocoDaEliminare(null);
+
+      setSuccessMessage("Gioco eliminato con successo!");
+      setTimeout(() => setSuccessMessage(""), 3000);
     }
   };
 
@@ -92,6 +105,12 @@ const AdminGiochi = () => {
   return (
     <div className="container mt-5 admin-retro">
       <h2 className="mb-4">Gestione Giochi</h2>
+
+      {successMessage && (
+        <Alert variant="success" onClose={() => setSuccessMessage("")} dismissible>
+          {successMessage}
+        </Alert>
+      )}
 
       {loading && (
         <div className="text-center">
@@ -144,7 +163,7 @@ const AdminGiochi = () => {
                 <Button variant="warning" size="sm" className="me-2" onClick={() => handleShowModal(gioco)}>
                   Modifica
                 </Button>
-                <Button variant="danger" size="sm" onClick={() => handleDelete(gioco.id)}>
+                <Button variant="danger" size="sm" onClick={() => handleDelete(gioco)}>
                   Elimina
                 </Button>
               </td>
@@ -206,6 +225,22 @@ const AdminGiochi = () => {
             </Button>
           </Modal.Footer>
         </Form>
+      </Modal>
+      <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Conferma Eliminazione</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Sei sicuro di voler eliminare il gioco <strong>{giocoDaEliminare?.titolo}</strong>?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>
+            Annulla
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            Elimina
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );
