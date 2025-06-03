@@ -429,13 +429,15 @@ export const loadUserFromLocalStorage = () => (dispatch) => {
 };
 
 export const fetchUtenti =
-  (page = 0) =>
+  (page = 0, username = "") =>
   async (dispatch, getState) => {
     dispatch({ type: "FETCH_UTENTI_REQUEST" });
     try {
       const token = getState().auth.token || localStorage.getItem("token");
 
-      const response = await fetch(`http://localhost:8082/utenti?page=${page}`, {
+      const baseUrl = username ? `http://localhost:8082/utenti/search?username=${username}&page=${page}` : `http://localhost:8082/utenti?page=${page}`;
+
+      const response = await fetch(baseUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -444,12 +446,11 @@ export const fetchUtenti =
       if (!response.ok) throw new Error("Errore nel caricamento degli utenti");
 
       const data = await response.json();
-      console.log(data);
 
       dispatch({
         type: "FETCH_UTENTI_SUCCESS",
         payload: {
-          lista: data.content || data,
+          lista: data.content || [],
           totalPages: data.totalPages || 1,
         },
       });

@@ -1,47 +1,41 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { eliminaUtente, fetchUtenti } from "../../redux/actions/giochiActions";
-import { Alert, Button, Container, Modal, Pagination, Spinner, Table } from "react-bootstrap";
+import { Alert, Button, Container, Form, InputGroup, Modal, Pagination, Spinner, Table } from "react-bootstrap";
 
 const AdminUtenti = () => {
   const dispatch = useDispatch();
   const { lista, loading, error, deleteSuccess, errorDelete, totalPages } = useSelector((state) => state.utenti);
+
   const [currentPage, setCurrentPage] = useState(0);
   const [utenteDaEliminare, setUtenteDaEliminare] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-
   const [deleteMessage, setDeleteMessage] = useState("");
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
-    dispatch(fetchUtenti(currentPage));
-  }, [dispatch, currentPage]);
+    const delayDebounce = setTimeout(() => {
+      dispatch(fetchUtenti(currentPage, searchTerm));
+    }, 500);
 
-  const handlePageChange = (page) => setCurrentPage(page);
-
-  const renderPagination = () => {
-    const items = [];
-    for (let number = 0; number < totalPages; number++) {
-      items.push(
-        <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
-          {number + 1}
-        </Pagination.Item>
-      );
-    }
-    return <Pagination className="pagination-retro mt-4">{items}</Pagination>;
-  };
+    return () => clearTimeout(delayDebounce);
+  }, [dispatch, currentPage, searchTerm]);
 
   useEffect(() => {
     if (deleteSuccess) {
       setDeleteMessage("Utente eliminato con successo!");
-
       const timer = setTimeout(() => {
         setDeleteMessage("");
         dispatch({ type: "RESET_DELETE_UTENTE" });
       }, 3000);
-
       return () => clearTimeout(timer);
     }
   }, [deleteSuccess, dispatch]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   const handleDelete = (utente) => {
     setUtenteDaEliminare(utente);
@@ -55,12 +49,45 @@ const AdminUtenti = () => {
       setUtenteDaEliminare(null);
     }
   };
+
+  const handleResetSearch = () => {
+    setSearchTerm("");
+    setCurrentPage(0);
+  };
+
+  const renderPagination = () => {
+    const items = [];
+    for (let number = 0; number < totalPages; number++) {
+      items.push(
+        <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
+          {number + 1}
+        </Pagination.Item>
+      );
+    }
+    return <Pagination className="pagination-retro mt-4">{items}</Pagination>;
+  };
+
   return (
     <Container className="mt-5 admin-retro">
       <h2 className="mb-4">Gestione Utenti</h2>
+
+      <InputGroup className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Cerca per username..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(0);
+          }}
+        />
+        <Button variant="secondary" onClick={handleResetSearch} className="ms-2">
+          Reset
+        </Button>
+      </InputGroup>
+
       {deleteMessage && <Alert variant="success">{deleteMessage}</Alert>}
       {errorDelete && <Alert variant="danger">{errorDelete}</Alert>}
-
       {loading && (
         <div className="text-center">
           <Spinner animation="border" />
@@ -75,7 +102,6 @@ const AdminUtenti = () => {
             <th>Username</th>
             <th>Email</th>
             <th>Ruolo</th>
-
             <th>Azioni</th>
           </tr>
         </thead>
@@ -93,7 +119,6 @@ const AdminUtenti = () => {
               <td>{utente.username}</td>
               <td>{utente.email}</td>
               <td>{utente.roles}</td>
-
               <td>
                 <Button variant="danger" size="sm" onClick={() => handleDelete(utente)}>
                   Elimina
@@ -103,7 +128,9 @@ const AdminUtenti = () => {
           ))}
         </tbody>
       </Table>
+
       {!loading && totalPages > 1 && renderPagination()}
+
       <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Conferma Eliminazione</Modal.Title>
