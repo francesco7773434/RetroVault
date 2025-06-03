@@ -38,8 +38,8 @@ const RecensioniPage = () => {
     <Container className="mt-5 recensioni-container text-center">
       <h2 className="retro-title mb-5">Tutte le Recensioni</h2>
 
-      <Form className="mb-4 d-flex justify-content-center gap-3">
-        <Form.Control type="text" placeholder="Cerca per titolo del gioco" value={titoloGioco} onChange={handleTitoloChange} style={{ maxWidth: "300px" }} />
+      <Form className="mb-4 d-flex justify-content-center px-3">
+        <Form.Control type="text" placeholder="Cerca per titolo" value={titoloGioco} onChange={handleTitoloChange} className="retro-input-field" />
       </Form>
 
       {loading && (
@@ -49,10 +49,10 @@ const RecensioniPage = () => {
       )}
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <Row>
+      <Row className="g-4">
         {tutte.length > 0
           ? tutte.map((recensione) => (
-              <Col md={6} key={recensione.id} className="mb-4">
+              <Col md={6} sm={12} key={recensione.id}>
                 <Card className="retro-game-card recensione-card text-start">
                   <Card.Body>
                     <Card.Title className="retro-font recensione-gioco">{recensione.titoloGioco}</Card.Title>
