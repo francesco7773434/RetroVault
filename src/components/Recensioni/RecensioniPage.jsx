@@ -38,7 +38,7 @@ const RecensioniPage = () => {
     <Container className="mt-5 recensioni-container text-center">
       <h2 className="retro-title mb-5">Tutte le Recensioni</h2>
 
-      <Form className="mb-4 d-flex justify-content-center px-3">
+      <Form className="mb-4 d-flex justify-content-center px-3 retro-search-form">
         <Form.Control type="text" placeholder="Cerca per titolo" value={titoloGioco} onChange={handleTitoloChange} className="retro-input-field" />
       </Form>
 

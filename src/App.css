@@ -770,3 +770,42 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+
+body {
+  overflow-x: hidden;
+}
+
+/* Restringe il form su schermi piccoli */
+.retro-search-form {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.retro-input-field {
+  width: 100%;
+  background-color: #1c1c1c;
+  color: #f4f4f4;
+  border: 2px solid #ffcc00;
+  border-radius: 4px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 0 6px rgba(255, 204, 0, 0.5);
+}
+
+@media (max-width: 576px) {
+  .retro-input-field {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .recensione-card {
+    padding: 0.5rem;
+  }
+}
+
+.recensione-card {
+  max-width: 100%;
+  word-wrap: break-word;
+}

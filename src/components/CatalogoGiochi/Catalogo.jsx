@@ -39,8 +39,15 @@ const Catalogo = () => {
   return (
     <Container className="catalogo-container text-center">
       <h2 className="retro-title mb-5 mt-3">I Nostri Giochi</h2>
-      <Form className="mb-4 d-flex justify-content-center gap-3 retro-input-field">
-        <Form.Control type="text" placeholder="Cerca per titolo" value={titolo} onChange={handleTitoloChange} style={{ maxWidth: "300px" }} />
+      <Form className="mb-4 d-flex justify-content-center px-3 retro-search-form">
+        <Form.Control
+          className="retro-input-field"
+          type="text"
+          placeholder="Cerca per titolo"
+          value={titolo}
+          onChange={handleTitoloChange}
+          style={{ maxWidth: "300px" }}
+        />
       </Form>
 
       {loading && <Spinner animation="border" variant="warning" />}
