@@ -479,3 +479,71 @@ export const eliminaUtente = (id) => async (dispatch, getState) => {
     dispatch({ type: "DELETE_UTENTE_FAILURE", payload: error.message });
   }
 };
+
+export const fetchPiattaforme = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: "FETCH_PIATTAFORME_REQUEST" });
+
+      const response = await fetch("http://localhost:8082/piattaforme/all");
+      if (!response.ok) throw new Error("Errore nel caricamento delle piattaforme");
+
+      const data = await response.json();
+      dispatch({ type: "FETCH_PIATTAFORME_SUCCESS", payload: data });
+    } catch (error) {
+      dispatch({ type: "FETCH_PIATTAFORME_FAILURE", payload: error.message });
+    }
+  };
+};
+
+export const creaPiattaforma = (piattaforma) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch("http://localhost:8082/piattaforme", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(piattaforma),
+      });
+
+      if (!response.ok) throw new Error("Errore nella creazione della piattaforma");
+
+      dispatch(fetchPiattaforme());
+    } catch (error) {
+      console.error("Errore creazione piattaforma:", error);
+    }
+  };
+};
+
+export const modificaPiattaforma = (id, piattaforma) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(`http://localhost:8082/piattaforme/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(piattaforma),
+      });
+
+      if (!response.ok) throw new Error("Errore nella modifica della piattaforma");
+
+      dispatch(fetchPiattaforme());
+    } catch (error) {
+      console.error("Errore modifica piattaforma:", error);
+    }
+  };
+};
+
+export const eliminaPiattaforma = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(`http://localhost:8082/piattaforme/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Errore nella cancellazione della piattaforma");
+
+      dispatch(fetchPiattaforme());
+    } catch (error) {
+      console.error("Errore cancellazione piattaforma:", error);
+    }
+  };
+};

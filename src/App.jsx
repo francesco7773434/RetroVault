@@ -15,6 +15,7 @@ import Backoffice from "./components/Backoffice/Backoffice";
 import AdminGiochi from "./components/Backoffice/AdminGiochi";
 import AdminRecensioni from "./components/Backoffice/AdminRecensioni";
 import AdminUtenti from "./components/Backoffice/AdminUtenti";
+import AdminPiattaforme from "./components/Backoffice/AdminPiattaforme";
 
 function App() {
   const dispatch = useDispatch();
@@ -80,6 +81,14 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <AdminUtenti />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/piattaforme"
+            element={
+              <ProtectedRoute user={user}>
+                <AdminPiattaforme />
               </ProtectedRoute>
             }
           />

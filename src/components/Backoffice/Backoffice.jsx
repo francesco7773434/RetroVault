@@ -41,6 +41,17 @@ const Backoffice = () => {
             </Card.Body>
           </Card>
         </Col>
+        <Col md={4} className="mb-4">
+          <Card className="retro-admin-card">
+            <Card.Body>
+              <Card.Title className="retro-font">🕹️ Piattaforme</Card.Title>
+              <Card.Text>Aggiungi o modifica le piattaforme disponibili</Card.Text>
+              <Link to="/admin/piattaforme">
+                <Button className="retro-btn-login">Gestione Piattaforme</Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
     </Container>
   );
