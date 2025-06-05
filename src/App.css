@@ -755,3 +755,18 @@ body {
   color: #b30000;
   border-color: #b30000;
 }
+
+.gameplay-video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.retro-title-yellow {
+  color: #ffd700 !important;
+  font-family: "Press Start 2P", cursive;
+  font-size: 1rem;
+  text-shadow: 1px 1px 2px black;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

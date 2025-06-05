@@ -92,6 +92,11 @@ const GiocoDettaglio = () => {
     setRecensioneSelezionata(null);
   };
 
+  const estraiYouTubeId = (url) => {
+    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);
+    return match ? match[1] : null;
+  };
+
   if (loading) return <Spinner animation="border" variant="warning" />;
   if (error) return <Alert variant="danger">{error}</Alert>;
   if (!giocoSingolo) return <p>Gioco non trovato.</p>;
@@ -102,9 +107,20 @@ const GiocoDettaglio = () => {
 
       <Row className="align-items-center">
         <Col md={6}>
-          <div className="game-image-container-detail">
-            <Card.Img src={giocoSingolo.immagine} className="game-image-detail mb-3" />
-          </div>
+          <Card>
+            <Card.Img src={giocoSingolo.immagine} className="game-image-detail" />
+          </Card>
+
+          {giocoSingolo.videoGameplay && (
+            <Card className="mt-4 bg-transparent border-0">
+              <Card.Body>
+                <Card.Title className="retro-title-yellow">🎮 Video Gameplay</Card.Title>
+                <div className="ratio ratio-16x9">
+                  <iframe src={`https://www.youtube.com/embed/${estraiYouTubeId(giocoSingolo.videoGameplay)}`} title="Gameplay Video" allowFullScreen></iframe>
+                </div>
+              </Card.Body>
+            </Card>
+          )}
         </Col>
         <Col md={6} className="text-start retro-description-box">
           <p>
