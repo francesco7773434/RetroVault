@@ -809,3 +809,10 @@ body {
   max-width: 100%;
   word-wrap: break-word;
 }
+
+.retro-footer {
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.8rem;
+  background-color: #111;
+  border-top: 2px solid #444;
+}
