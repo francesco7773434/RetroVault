@@ -179,7 +179,7 @@ const GiocoDettaglio = () => {
               <br />
               <strong>Commento:</strong> {recensione.commento}
               <br />
-              <strong>Data:</strong> {recensione.dataRecensione}
+              <strong>Data:</strong> {new Date(recensione.dataRecensione).toISOString().slice(0, 10)}
               {user && recensione.utenteId === user.id && (
                 <div className="text-end mt-2">
                   <Button variant="danger" size="sm" onClick={() => apriModaleConferma(recensione.id)}>
