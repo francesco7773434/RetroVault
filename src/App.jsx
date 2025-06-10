@@ -16,6 +16,7 @@ import AdminGiochi from "./components/Backoffice/AdminGiochi";
 import AdminRecensioni from "./components/Backoffice/AdminRecensioni";
 import AdminUtenti from "./components/Backoffice/AdminUtenti";
 import AdminPiattaforme from "./components/Backoffice/AdminPiattaforme";
+import Contatti from "./components/Home/Contatti";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/recensioni" element={<RecensioniPage />} />
+          <Route path="/contatti" element={<Contatti />} />
 
           <Route
             path="/profilo"

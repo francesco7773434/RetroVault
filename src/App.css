@@ -816,3 +816,26 @@ body {
   background-color: #111;
   border-top: 2px solid #444;
 }
+
+.retro-contacts {
+  background-color: #1f1f1f;
+  color: #f5f5f5;
+  border: 3px solid #00ff99;
+  padding: 2rem;
+  margin-top: 3rem;
+  font-family: "Press Start 2P", cursive;
+  box-shadow: 0 0 15px #00ff99;
+  border-radius: 10px;
+}
+
+.retro-contacts .retro-links a {
+  color: #00ff99;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.retro-contacts .retro-links a:hover {
+  color: #ff00cc;
+  text-shadow: 0 0 5px #ff00cc;
+}
